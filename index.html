@@ -153,6 +153,7 @@ input,textarea,select{border-color:rgba(124,145,170,.18)!important}
 </div>
 <script>
 const $=id=>document.getElementById(id), jobs=[];
+let pumpBusy=false;
 const PROMPT=`Você é o ShopFlow Director: estrategista sênior de TikTok Shop, roteirista UGC e prompt engineer especializado especificamente no GOOGLE FLOW para criação de imagens e animação de frames com Veo.
 
 OBJETIVO DE PRODUÇÃO
@@ -244,7 +245,7 @@ function apiState(){$('apiState').className=localStorage.getItem('matrix_gemini_
 $('files').onchange=()=>{$('pickText').textContent=$('files').files.length?$('files').files.length+' imagem(ns) selecionada(s)':'Clique ou arraste imagens'}
 async function enqueue(){const fs=[...$('files').files];if(!fs.length)return alert('Selecione pelo menos uma imagem do produto.');if(!localStorage.getItem('matrix_gemini_key'))return settings();const previews=await Promise.all(fs.map(f=>fileDataURL(f)));const counts={g:Math.max(1,+$('ng').value||1),b:Math.max(1,+$('nb').value||1),c:Math.max(1,+$('nc').value||1)};jobs.push({id:crypto.randomUUID(),files:fs,urls:previews,name:'Produto com '+fs.length+' imagem(ns)',notes:$('notes').value,status:'fila',counts});$('files').value='';$('pickText').textContent='Clique ou arraste imagens';render();pump()}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function render(){const c={fila:0,processando:0,pronto:0,erro:0};jobs.forEach(j=>c[j.status]++);$('counts').innerHTML=`Fila ${c.fila} · <span style="color:#38bdf8">Processando ${c.processando}</span> · <span style="color:#2dd4a3">Pronto ${c.pronto}</span> · <span style="color:#ff6868">Erro ${c.erro}</span>`;$('empty').style.display=jobs.length?'none':'block';$('queue').innerHTML=jobs.map(j=>`<div class="job"><div class="jobhead"><div class="thumbs">${(j.urls||[]).map(u=>`<img class="thumb" src="${u}">`).join('')}</div><div class="grow"><div class="name">${esc(j.result?.produto||j.name)}</div><div class="status ${j.status}">${j.status==='fila'?'NA FILA':j.status==='processando'?'PROCESSANDO...':j.status==='pronto'?'PRONTO':'ERRO'}</div><div class="muted" style="font-size:11px;margin-top:5px">${(j.files||[]).length} imagem(ns) deste produto · ${j.counts?.g||3}-${j.counts?.b||2}-${j.counts?.c||1} · ${(j.counts?.g||3)*(j.counts?.b||2)*(j.counts?.c||1)} combinações</div>${j.error?`<div class="errtxt">${esc(j.error)}</div>`:''}</div>${j.status==='processando'?'<div class="spinner"></div>':''}${j.status==='erro'?`<button class="btn" onclick="retry('${j.id}')">Tentar novamente</button>`:''}<button class="btn" onclick="removeJob('${j.id}')">Excluir</button></div>${j.result?matrix(j):''}</div>`).join('')}
+function render(){const c={fila:0,processando:0,aguardando:0,pronto:0,erro:0};jobs.forEach(j=>{if(c[j.status]!==undefined)c[j.status]++});$('counts').innerHTML=`Fila ${c.fila} · <span style="color:#38bdf8">Processando ${c.processando}</span> · <span style="color:#fbbf24">Aguardando Gemini ${c.aguardando}</span> · <span style="color:#2dd4a3">Pronto ${c.pronto}</span> · <span style="color:#ff6868">Erro ${c.erro}</span>`;$('empty').style.display=jobs.length?'none':'block';$('queue').innerHTML=jobs.map(j=>`<div class="job"><div class="jobhead"><div class="thumbs">${(j.urls||[]).map(u=>`<img class="thumb" src="${u}">`).join('')}</div><div class="grow"><div class="name">${esc(j.result?.produto||j.name)}</div><div class="status ${j.status==='aguardando'?'queued':j.status}">${j.status==='fila'?'NA FILA':j.status==='processando'?'PROCESSANDO...':j.status==='aguardando'?`AGUARDANDO GEMINI${j.waitSeconds?` · nova tentativa em ${j.waitSeconds}s`:''}`:j.status==='pronto'?'PRONTO':'ERRO'}</div><div class="muted" style="font-size:11px;margin-top:5px">${(j.files||[]).length} imagem(ns) deste produto · ${j.counts?.g||3}-${j.counts?.b||2}-${j.counts?.c||1} · ${(j.counts?.g||3)*(j.counts?.b||2)*(j.counts?.c||1)} combinações</div>${j.error?`<div class="errtxt">${esc(j.error)}</div>`:''}</div>${j.status==='processando'||j.status==='aguardando'?'<div class="spinner"></div>':''}${j.status==='erro'?`<button class="btn" onclick="retry('${j.id}')">Tentar novamente</button>`:''}<button class="btn" onclick="removeJob('${j.id}')">Excluir</button></div>${j.result?matrix(j):''}</div>`).join('')}
 function matrix(j){
  const fw=(label,value)=>`<div class="label">${label}</div><div class="fieldwrap"><div class="field visual">${esc(value||'')}</div><button class="copyfield" onclick="copyText(this,decodeURIComponent('${encodeURIComponent(value||'')}'))">Copiar</button></div>`;
  const section=(title,arr,prefix)=>`<h3 style="color:#2dd4a3;margin-top:22px">${title}</h3>${(arr||[]).map((x,i)=>{const cardText=`${prefix} ${i+1} — ${x.titulo||''}\n\nCódigo e objetivo: ${x.codigo_objetivo||''}\nDuração sugerida: ${x.duracao_sugerida||''}\nTipo de cena: ${x.tipo_cena||''}\n\nConceito visual:\n${x.conceito_visual||''}\n\nPrompt para criação da imagem no Google Flow:\n${x.prompt_imagem||''}\n\nFala ou narração exata:\n${x.fala_exata||''}\n\nPrompt para animação no Google Flow:\n${x.prompt_movimento||''}`;return `<div class="itemcard"><div style="display:flex;justify-content:space-between;gap:10px;align-items:start"><h3 style="margin:0 0 8px">${prefix} ${i+1} — “${esc(x.titulo||'')}”</h3><button class="btn" style="font-size:10px;padding:7px 9px" onclick="copyText(this,decodeURIComponent('${encodeURIComponent(cardText)}'))">Copiar card</button></div><div class="code">${esc(x.codigo_objetivo||'')}</div><div class="meta"><span class="pill">⏱ ${esc(x.duracao_sugerida||'')}</span><span class="pill">🎬 ${esc(x.tipo_cena||'')}</span></div>${fw('CONCEITO VISUAL',x.conceito_visual)}${fw('PROMPT DE IMAGEM — GOOGLE FLOW',x.prompt_imagem)}${fw('FALA OU NARRAÇÃO EXATA',x.fala_exata)}${fw('PROMPT DE MOVIMENTO — GOOGLE FLOW / VEO',x.prompt_movimento)}</div>`}).join('')}`;
@@ -252,23 +253,38 @@ function matrix(j){
 function removeJob(id){const i=jobs.findIndex(j=>j.id===id);if(i>=0){jobs.splice(i,1)}render();pump()}
 function retry(id){const j=jobs.find(j=>j.id===id);j.status='fila';delete j.error;render();pump()}
 function fileDataURL(file){return new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=no;r.readAsDataURL(file)})}
-function base64(file){return fileDataURL(file).then(x=>x.split(',')[1])}
+async function optimizedImagePart(file){
+ const url=await fileDataURL(file);
+ return await new Promise(resolve=>{const img=new Image();img.onload=()=>{const max=1280,scale=Math.min(1,max/Math.max(img.width,img.height)),w=Math.max(1,Math.round(img.width*scale)),h=Math.max(1,Math.round(img.height*scale));const cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d').drawImage(img,0,0,w,h);const out=cv.toDataURL('image/jpeg',.82);resolve({inline_data:{mime_type:'image/jpeg',data:out.split(',')[1]}})};img.onerror=()=>resolve({inline_data:{mime_type:file.type||'image/jpeg',data:url.split(',')[1]}});img.src=url})
+}
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function waitRetry(j,ms,attempt){
+ j.status='aguardando';j.error=`Gemini ocupado. Tentativa automática ${attempt}/8 sem enviar novas requisições durante a espera.`;
+ for(let left=Math.ceil(ms/1000);left>0;left--){j.waitSeconds=left;render();await sleep(1000)}
+ delete j.waitSeconds;delete j.error;j.status='processando';render();
+}
 async function processJob(j){
  try{
   const key=localStorage.getItem('matrix_gemini_key'),imageParts=[];
-  for(const file of j.files)imageParts.push({inline_data:{mime_type:file.type||"image/jpeg",data:await base64(file)}});
-  const requested=`\n\nQUANTIDADE ESCOLHIDA PELO USUÁRIO: gere EXATAMENTE ${j.counts.g} Ganchos, ${j.counts.b} Corpos e ${j.counts.c} CTAs. Isso produzirá ${j.counts.g*j.counts.b*j.counts.c} combinações no multiplicador.`;const body={contents:[{role:"user",parts:[{text:PROMPT+"\n\nOBSERVAÇÕES DO USUÁRIO:\n"+(j.notes||"Nenhuma.")+"\n\nTodas as imagens a seguir são referências do MESMO produto."+requested},...imageParts]}],generationConfig:{responseMimeType:"application/json",maxOutputTokens:16384,temperature:.72}};
-  let last=null;
-  for(let attempt=0;attempt<5;attempt++){
+  for(const file of j.files)imageParts.push(await optimizedImagePart(file));
+  const requested=`\n\nQUANTIDADE ESCOLHIDA PELO USUÁRIO: gere EXATAMENTE ${j.counts.g} Ganchos, ${j.counts.b} Corpos e ${j.counts.c} CTAs. Isso produzirá ${j.counts.g*j.counts.b*j.counts.c} combinações no multiplicador.`;
+  const body={contents:[{role:"user",parts:[{text:PROMPT+"\n\nOBSERVAÇÕES DO USUÁRIO:\n"+(j.notes||"Nenhuma.")+"\n\nTodas as imagens a seguir são referências do MESMO produto."+requested},...imageParts]}],generationConfig:{responseMimeType:"application/json",maxOutputTokens:16384,temperature:.72}};
+  let last=null;const waits=[5000,10000,20000,35000,55000,80000,120000];
+  for(let attempt=0;attempt<8;attempt++){
    const res=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent",{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":key},body:JSON.stringify(body)});
    const data=await res.json().catch(()=>({}));
-   if(res.ok){let text=(data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||"").join("").trim().replace(/^```json\s*/i,"").replace(/```$/,"").trim();if(!text)throw new Error("O Gemini não retornou conteúdo.");const parsed=JSON.parse(text);if(!parsed.produto||!Array.isArray(parsed.ganchos)||!Array.isArray(parsed.corpos)||!Array.isArray(parsed.ctas))throw new Error("A resposta veio incompleta.");if(parsed.ganchos.length!==j.counts.g||parsed.corpos.length!==j.counts.b||parsed.ctas.length!==j.counts.c)throw new Error("A IA não respeitou a quantidade escolhida. Clique em tentar novamente.");j.result=parsed;j.status="pronto";return}
-   last=new Error(data.error?.message||("Erro HTTP "+res.status));if(res.status===429||res.status===503){await sleep(1800*Math.pow(2,attempt));continue}throw last;
-  }throw last||new Error("Falha temporária no Gemini.");
+   if(res.ok){let text=(data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||"").join("").trim().replace(/^```json\s*/i,"").replace(/```$/,"").trim();if(!text)throw new Error("O Gemini não retornou conteúdo.");const parsed=JSON.parse(text);if(!parsed.produto||!Array.isArray(parsed.ganchos)||!Array.isArray(parsed.corpos)||!Array.isArray(parsed.ctas))throw new Error("A resposta veio incompleta.");if(parsed.ganchos.length!==j.counts.g||parsed.corpos.length!==j.counts.b||parsed.ctas.length!==j.counts.c)throw new Error("A IA não respeitou a quantidade escolhida. Clique em tentar novamente.");j.result=parsed;j.status="pronto";delete j.error;return}
+   last=new Error(data.error?.message||("Erro HTTP "+res.status));
+   if((res.status===429||res.status===503)&&attempt<7){const jitter=Math.floor(Math.random()*2500);await waitRetry(j,waits[attempt]+jitter,attempt+2);continue}
+   throw last;
+  }
+  throw last||new Error("Falha temporária no Gemini.");
  }catch(e){j.status="erro";j.error=e.message||String(e)}
 }
-async function pump(){if(jobs.some(j=>j.status==='processando'))return;const j=jobs.find(j=>j.status==='fila');if(!j)return;j.status='processando';render();await processJob(j);render();pump()}
+async function pump(){
+ if(pumpBusy)return;pumpBusy=true;
+ try{let j;while((j=jobs.find(x=>x.status==='fila'))){j.status='processando';render();await processJob(j);render();await sleep(2500)}}finally{pumpBusy=false}
+}
 async function copyText(btn,text){try{await navigator.clipboard.writeText(text);const old=btn.textContent;btn.textContent='Copiado ✓';setTimeout(()=>btn.textContent=old,1200)}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();const old=btn.textContent;btn.textContent='Copiado ✓';setTimeout(()=>btn.textContent=old,1200)}}
 function copyAll(id){const j=jobs.find(j=>j.id===id);navigator.clipboard.writeText(JSON.stringify(j.result,null,2)).then(()=>alert('Matriz copiada.'))}
 const d=$('drop');['dragover','dragenter'].forEach(e=>d.addEventListener(e,x=>x.preventDefault()));d.addEventListener('drop',e=>{e.preventDefault();const dt=new DataTransfer();[...e.dataTransfer.files].filter(f=>f.type.startsWith('image/')).forEach(f=>dt.items.add(f));$('files').files=dt.files;$('files').onchange()});
