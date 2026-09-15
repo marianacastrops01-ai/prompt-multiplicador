@@ -105,7 +105,7 @@ input,textarea,select{border-color:rgba(124,145,170,.18)!important}
  <button class="navtab" onclick="showTab('banco',this)">🧠 Banco de Prompts</button>
 </div>
 
-<div class="muted">Esteira de criação de matrizes para vídeos de venda.</div></div><button class="btn" onclick="settings()">⚙ Configurações da API</button></div>
+<div class="muted">Esteira de criação de matrizes para vídeos de venda.</div></div><div class="row"><button class="btn" onclick="settings()">⚙ Configurações da API</button><a class="btn" href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="text-decoration:none">🔑 Obter API Gemini</a></div></div>
 <div class="grid">
 <div class="card"><h2>Adicionar à fila</h2><div class="muted">Adicione produtos enquanto os anteriores são processados.</div>
 <label class="drop" id="drop"><div><div style="font-size:36px">⬆️</div><strong id="pickText">Clique ou arraste imagens</strong><small>PNG, JPG, JPEG ou WEBP</small></div><input hidden id="files" type="file" multiple accept="image/*"></label>
@@ -132,7 +132,7 @@ input,textarea,select{border-color:rgba(124,145,170,.18)!important}
 <div class="card"><div style="display:flex;justify-content:space-between;gap:10px"><div><h2 style="margin:0">Esteira de Produtos</h2><div class="muted">Na Fila → Processando → Pronto</div></div><div id="counts" class="count"></div></div><div id="queue"></div><div id="empty" class="muted" style="text-align:center;padding:110px 0">Nenhum produto na esteira.</div></div>
 </div></div>
 
-<div id="modal" class="modal"><div class="modalbox"><h2>Gemini API</h2><p class="muted">Cole uma vez. A chave fica salva somente neste navegador.</p><input id="key" type="password" placeholder="Gemini API Key"><div class="row" style="margin-top:12px"><button class="btn primary" style="margin:0" onclick="saveKey()">Salvar chave</button><button class="btn" onclick="closeSettings()">Fechar</button></div></div></div>
+<div id="modal" class="modal"><div class="modalbox"><h2>Gemini API</h2><p class="muted">Cole uma vez. A chave fica salva somente neste navegador.</p><input id="key" type="password" placeholder="Gemini API Key"><div class="row" style="margin-top:12px"><button class="btn primary" style="margin:0" onclick="saveKey()">Salvar chave</button><a class="btn" href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="text-decoration:none">🔑 Criar / pegar API</a><button class="btn" onclick="closeSettings()">Fechar</button></div></div></div>
 
 
 </div>
