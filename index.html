@@ -22,7 +22,7 @@ body{background:
  radial-gradient(circle at 15% -10%,rgba(39,230,163,.08),transparent 28%),
  radial-gradient(circle at 88% 0%,rgba(72,113,255,.06),transparent 25%),
  var(--pm-bg)!important;color:var(--pm-text)}
-.wrap{max-width:1440px!important;margin:0 auto;padding:22px 28px 42px!important}
+.wrap{max-width:1240px!important;margin:0 auto;padding:22px 24px 42px!important}
 .pm-topbar{
  display:flex;align-items:center;justify-content:space-between;gap:18px;
  padding:4px 2px 17px;border-bottom:1px solid rgba(255,255,255,.065)
@@ -83,6 +83,11 @@ input,textarea,select{border-color:rgba(124,145,170,.18)!important}
 .banktab.active{background:#14241f!important;color:#39e5b4!important;box-shadow:inset 0 0 0 1px rgba(39,230,163,.2)}
 .banktab .banknum{font-size:10px;margin-left:6px;padding:2px 6px;border-radius:999px;background:rgba(255,255,255,.06);color:inherit}
 @media(max-width:700px){.banktabs{width:100%;overflow:auto}.banktab{white-space:nowrap}}
+
+.history-shell{width:100%;max-width:1180px;margin:0 auto;padding:0}
+.history-panel{width:100%;border-radius:15px!important;min-height:360px}
+#historyList .job{width:100%}
+@media(max-width:700px){.history-shell{max-width:100%}.history-panel{padding:14px!important}}
 
 </style>
 </head>
@@ -162,13 +167,15 @@ input,textarea,select{border-color:rgba(124,145,170,.18)!important}
 </div>
 
 <div id="tab-historico" class="tabpane">
- <div class="panel" style="padding:18px">
+ <div class="history-shell">
+ <div class="panel history-panel" style="padding:18px">
   <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
    <div><h2 style="margin:0 0 5px">Histórico de Gerações</h2><div class="sub">As matrizes concluídas ficam salvas neste navegador. Você pode abrir, refazer ou excluir.</div></div>
    <span class="pill" id="historyCount">0 gerações</span>
   </div>
   <div id="historyList" style="margin-top:16px"></div>
   <div id="historyEmpty" class="muted" style="text-align:center;padding:90px 20px">Nenhuma geração concluída ainda.</div>
+ </div>
  </div>
 </div>
 <script>
