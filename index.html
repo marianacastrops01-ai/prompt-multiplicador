@@ -106,7 +106,7 @@ input,textarea,select{border-color:rgba(124,145,170,.18)!important}
   <div class="pm-badge">FLOW PROMPT ENGINE</div>
 </div>
 
-<div class="muted">Esteira de criação de matrizes para vídeos de venda.</div></div><div class="row"><button class="btn" onclick="settings()">⚙ Configurações da API</button><a class="btn" href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="text-decoration:none">🔑 Obter API Gemini</a></div></div>
+<div class="muted">Esteira de criação de matrizes para vídeos de venda.</div></div><div class="row"><button class="btn" onclick="settings()">⚙ Configurações das APIs</button><a class="btn" href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="text-decoration:none">🔑 Obter API Gemini</a></div></div>
 <div class="grid">
 <div class="card"><h2>Adicionar à fila</h2><div class="muted">Adicione produtos enquanto os anteriores são processados.</div>
 <label class="drop" id="drop"><div><div style="font-size:36px">⬆️</div><strong id="pickText">Clique ou arraste imagens</strong><small>PNG, JPG, JPEG ou WEBP</small></div><input hidden id="files" type="file" multiple accept="image/*"></label>
@@ -133,7 +133,15 @@ input,textarea,select{border-color:rgba(124,145,170,.18)!important}
 <div class="card"><div style="display:flex;justify-content:space-between;gap:10px"><div><h2 style="margin:0">Esteira de Produtos</h2><div class="muted">Na Fila → Processando → Pronto</div></div><div id="counts" class="count"></div></div><div id="queue"></div><div id="empty" class="muted" style="text-align:center;padding:110px 0">Nenhum produto na esteira.</div></div>
 </div></div>
 
-<div id="modal" class="modal"><div class="modalbox"><h2>Gemini API</h2><p class="muted">Cole uma vez. A chave fica salva somente neste navegador.</p><input id="key" type="password" placeholder="Gemini API Key"><div class="row" style="margin-top:12px"><button class="btn primary" style="margin:0" onclick="saveKey()">Salvar chave</button><a class="btn" href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="text-decoration:none">🔑 Criar / pegar API</a><button class="btn" onclick="closeSettings()">Fechar</button></div></div></div>
+<div id="modal" class="modal"><div class="modalbox" style="max-width:720px"><h2>Configurações das APIs</h2><p class="muted">Escolha o provedor principal. As chaves ficam salvas somente neste navegador.</p>
+<div style="display:grid;gap:12px">
+<label><b>Provedor para gerar</b><select id="provider" style="width:100%;margin-top:6px"><option value="gemini">Google Gemini</option><option value="openai">OpenAI</option><option value="anthropic">Anthropic Claude</option></select></label>
+<label><b>Gemini API Key</b><input id="key" type="password" placeholder="Gemini API Key"></label>
+<label><b>OpenAI API Key</b><input id="openaiKey" type="password" placeholder="sk-..."></label>
+<label><b>Anthropic API Key</b><input id="anthropicKey" type="password" placeholder="sk-ant-..."></label>
+</div>
+<div class="row" style="margin-top:14px"><button class="btn primary" style="margin:0" onclick="saveKeys()">Salvar configurações</button><a class="btn" href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="text-decoration:none">Gemini</a><a class="btn" href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" style="text-decoration:none">OpenAI</a><a class="btn" href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener noreferrer" style="text-decoration:none">Anthropic</a><button class="btn" onclick="closeSettings()">Fechar</button></div>
+<p class="muted" style="font-size:11px;margin-top:12px">Aviso: como esta versão roda direto no navegador/GitHub Pages, chaves usadas no front-end podem ficar expostas ao próprio navegador. Para uso público/produção, o ideal é mover as chamadas para um backend.</p></div></div>
 
 
 </div>
@@ -251,12 +259,14 @@ Retorne SOMENTE JSON válido, sem markdown:
 function preset(el){document.querySelectorAll('.preset').forEach(x=>x.classList.remove('active'));el.classList.add('active');$('ng').value=el.dataset.g;$('nb').value=el.dataset.b;$('nc').value=el.dataset.c;updateMatrixTotal()}
 function manualMatrix(){document.querySelectorAll('.preset').forEach(x=>x.classList.remove('active'));updateMatrixTotal()}
 function updateMatrixTotal(){const g=Math.max(1,+$('ng').value||1),b=Math.max(1,+$('nb').value||1),c=Math.max(1,+$('nc').value||1);$('matrixTotal').textContent=`${g} × ${b} × ${c} = ${g*b*c} combinações de vídeo`}
-function settings(){$('key').value=localStorage.getItem('matrix_gemini_key')||'';$('modal').classList.add('on')}
+function getProvider(){return localStorage.getItem('matrix_provider')||'gemini'}
+function providerKey(p=getProvider()){return localStorage.getItem(p==='gemini'?'matrix_gemini_key':p==='openai'?'matrix_openai_key':'matrix_anthropic_key')||''}
+function settings(){$('key').value=localStorage.getItem('matrix_gemini_key')||'';$('openaiKey').value=localStorage.getItem('matrix_openai_key')||'';$('anthropicKey').value=localStorage.getItem('matrix_anthropic_key')||'';$('provider').value=getProvider();$('modal').classList.add('on')}
 function closeSettings(){$('modal').classList.remove('on')}
-function saveKey(){const k=$('key').value.trim();if(!k)return alert('Cole sua chave Gemini.');localStorage.setItem('matrix_gemini_key',k);closeSettings();apiState()}
-function apiState(){$('apiState').className=localStorage.getItem('matrix_gemini_key')?'apiok':'apiwarn';$('apiState').textContent=localStorage.getItem('matrix_gemini_key')?'✓ Chave Gemini salva neste navegador.':'⚠ Configure a chave Gemini.'}
+function saveKeys(){localStorage.setItem('matrix_gemini_key',$('key').value.trim());localStorage.setItem('matrix_openai_key',$('openaiKey').value.trim());localStorage.setItem('matrix_anthropic_key',$('anthropicKey').value.trim());localStorage.setItem('matrix_provider',$('provider').value);if(!providerKey($('provider').value))return alert('Cole a chave do provedor selecionado.');closeSettings();apiState()}
+function apiState(){const p=getProvider(),ok=!!providerKey(p),label=p==='gemini'?'Gemini':p==='openai'?'OpenAI':'Anthropic';$('apiState').className=ok?'apiok':'apiwarn';$('apiState').textContent=ok?`✓ ${label} selecionado e chave salva neste navegador.`:`⚠ Configure a chave de ${label}.`}
 $('files').onchange=()=>{$('pickText').textContent=$('files').files.length?$('files').files.length+' imagem(ns) selecionada(s)':'Clique ou arraste imagens'}
-async function enqueue(){const fs=[...$('files').files];if(!fs.length)return alert('Selecione pelo menos uma imagem do produto.');if(!localStorage.getItem('matrix_gemini_key'))return settings();const previews=await Promise.all(fs.map(f=>fileDataURL(f)));const counts={g:Math.max(1,+$('ng').value||1),b:Math.max(1,+$('nb').value||1),c:Math.max(1,+$('nc').value||1)};jobs.push({id:crypto.randomUUID(),files:fs,urls:previews,name:'Produto com '+fs.length+' imagem(ns)',notes:$('notes').value,status:'fila',counts});$('files').value='';$('pickText').textContent='Clique ou arraste imagens';render();pump()}
+async function enqueue(){const fs=[...$('files').files];if(!fs.length)return alert('Selecione pelo menos uma imagem do produto.');if(!providerKey())return settings();const previews=await Promise.all(fs.map(f=>fileDataURL(f)));const counts={g:Math.max(1,+$('ng').value||1),b:Math.max(1,+$('nb').value||1),c:Math.max(1,+$('nc').value||1)};jobs.push({id:crypto.randomUUID(),files:fs,urls:previews,name:'Produto com '+fs.length+' imagem(ns)',notes:$('notes').value,status:'fila',counts});$('files').value='';$('pickText').textContent='Clique ou arraste imagens';render();pump()}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function render(){const c={fila:0,processando:0,aguardando:0,pronto:0,erro:0};jobs.forEach(j=>{if(c[j.status]!==undefined)c[j.status]++});$('counts').innerHTML=`Fila ${c.fila} · <span style="color:#38bdf8">Processando ${c.processando}</span> · <span style="color:#fbbf24">Aguardando Gemini ${c.aguardando}</span> · <span style="color:#2dd4a3">Pronto ${c.pronto}</span> · <span style="color:#ff6868">Erro ${c.erro}</span>`;$('empty').style.display=jobs.length?'none':'block';$('queue').innerHTML=jobs.map(j=>`<div class="job"><div class="jobhead"><div class="thumbs">${(j.urls||[]).map(u=>`<img class="thumb" src="${u}">`).join('')}</div><div class="grow"><div class="name">${esc(j.result?.produto||j.name)}</div><div class="status ${j.status==='aguardando'?'queued':j.status}">${j.status==='fila'?'NA FILA':j.status==='processando'?'PROCESSANDO...':j.status==='aguardando'?`AGUARDANDO GEMINI${j.waitSeconds?` · nova tentativa em ${j.waitSeconds}s`:''}`:j.status==='pronto'?'PRONTO':'ERRO'}</div><div class="muted" style="font-size:11px;margin-top:5px">${(j.urls||[]).length} imagem(ns) deste produto · ${j.counts?.g||3}-${j.counts?.b||2}-${j.counts?.c||1} · ${(j.counts?.g||3)*(j.counts?.b||2)*(j.counts?.c||1)} combinações</div>${j.error?`<div class="errtxt">${esc(j.error)}</div>`:''}</div>${j.status==='processando'||j.status==='aguardando'?'<div class="spinner"></div>':''}${j.status==='erro'?`<button class="btn" onclick="retry('${j.id}')">Tentar novamente</button>`:''}<button class="btn" onclick="removeJob('${j.id}')">Excluir</button></div>${j.result?matrix(j):''}</div>`).join('')}
 function matrix(j){
@@ -293,21 +303,36 @@ async function waitRetry(j,ms,attempt){
 }
 async function processJob(j){
  try{
-  const key=localStorage.getItem('matrix_gemini_key'),imageParts=[];
+  const provider=getProvider(),key=providerKey(provider),imageParts=[];
+  if(!key)throw new Error('Configure a chave do provedor selecionado.');
   if(j.files?.length){for(const file of j.files)imageParts.push(await optimizedImagePart(file))}else{for(const url of (j.urls||[]))imageParts.push(await optimizedDataURLPart(url))}
   const requested=`\n\nQUANTIDADE ESCOLHIDA PELO USUÁRIO: gere EXATAMENTE ${j.counts.g} Ganchos, ${j.counts.b} Corpos e ${j.counts.c} CTAs. Isso produzirá ${j.counts.g*j.counts.b*j.counts.c} combinações no multiplicador.`;
-  const body={contents:[{role:"user",parts:[{text:PROMPT+"\n\nOBSERVAÇÕES DO USUÁRIO:\n"+(j.notes||"Nenhuma.")+"\n\nTodas as imagens a seguir são referências do MESMO produto."+requested},...imageParts]}],generationConfig:{responseMimeType:"application/json",maxOutputTokens:16384,temperature:.72}};
+  const fullPrompt=PROMPT+"\n\nOBSERVAÇÕES DO USUÁRIO:\n"+(j.notes||"Nenhuma.")+"\n\nTodas as imagens a seguir são referências do MESMO produto."+requested;
   let last=null;const waits=[5000,10000,20000,35000,55000,80000,120000];
   for(let attempt=0;attempt<8;attempt++){
-   const res=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent",{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":key},body:JSON.stringify(body)});
-   const data=await res.json().catch(()=>({}));
-   if(res.ok){let text=(data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||"").join("").trim().replace(/^```json\s*/i,"").replace(/```$/,"").trim();if(!text)throw new Error("O Gemini não retornou conteúdo.");const parsed=JSON.parse(text);if(!parsed.produto||!Array.isArray(parsed.ganchos)||!Array.isArray(parsed.corpos)||!Array.isArray(parsed.ctas))throw new Error("A resposta veio incompleta.");if(parsed.ganchos.length!==j.counts.g||parsed.corpos.length!==j.counts.b||parsed.ctas.length!==j.counts.c)throw new Error("A IA não respeitou a quantidade escolhida. Clique em tentar novamente.");j.result=parsed;j.status="pronto";delete j.error;await historyPut({id:crypto.randomUUID(),createdAt:Date.now(),name:parsed.produto||j.name,notes:j.notes||"",counts:{...j.counts},urls:[...(j.urls||[])],result:parsed});return}
-   last=new Error(data.error?.message||("Erro HTTP "+res.status));
-   if((res.status===429||res.status===503)&&attempt<7){const jitter=Math.floor(Math.random()*2500);await waitRetry(j,waits[attempt]+jitter,attempt+2);continue}
+   let res,data,text='';
+   if(provider==='gemini'){
+    const body={contents:[{role:'user',parts:[{text:fullPrompt},...imageParts]}],generationConfig:{responseMimeType:'application/json',maxOutputTokens:16384,temperature:.72}};
+    res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent',{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify(body)});data=await res.json().catch(()=>({}));
+    if(res.ok)text=(data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('').trim();
+   }else if(provider==='openai'){
+    const content=[{type:'input_text',text:fullPrompt},...imageParts.map(p=>({type:'input_image',image_url:`data:${p.inline_data.mime_type};base64,${p.inline_data.data}`}))];
+    res=await fetch('https://api.openai.com/v1/responses',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'gpt-5.6-luna',input:[{role:'user',content}],text:{format:{type:'json_object'}},max_output_tokens:16384})});data=await res.json().catch(()=>({}));
+    if(res.ok)text=data.output_text||(data.output||[]).flatMap(o=>o.content||[]).map(x=>x.text||'').join('');
+   }else{
+    const content=[...imageParts.map(p=>({type:'image',source:{type:'base64',media_type:p.inline_data.mime_type,data:p.inline_data.data}})),{type:'text',text:fullPrompt}];
+    res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-5',max_tokens:16384,messages:[{role:'user',content}]})});data=await res.json().catch(()=>({}));
+    if(res.ok)text=(data.content||[]).filter(x=>x.type==='text').map(x=>x.text||'').join('');
+   }
+   if(res.ok){text=String(text||'').trim().replace(/^```json\s*/i,'').replace(/```$/,'').trim();if(!text)throw new Error('A IA não retornou conteúdo.');const parsed=JSON.parse(text);if(!parsed.produto||!Array.isArray(parsed.ganchos)||!Array.isArray(parsed.corpos)||!Array.isArray(parsed.ctas))throw new Error('A resposta veio incompleta.');if(parsed.ganchos.length!==j.counts.g||parsed.corpos.length!==j.counts.b||parsed.ctas.length!==j.counts.c)throw new Error('A IA não respeitou a quantidade escolhida. Clique em tentar novamente.');j.result=parsed;j.status='pronto';delete j.error;await historyPut({id:crypto.randomUUID(),createdAt:Date.now(),name:parsed.produto||j.name,notes:j.notes||'',counts:{...j.counts},urls:[...(j.urls||[])],result:parsed,provider});return}
+   const msg=data?.error?.message||data?.error?.error?.message||data?.message||('Erro HTTP '+res.status);last=new Error(msg);
+   const quota=/quota exceeded|free_tier_requests|billing|credit balance|usage limit/i.test(msg);
+   if(quota){j.status='erro';j.error='COTA DA API ATINGIDA — '+msg;return}
+   if((res.status===429||res.status===503||res.status===529)&&attempt<7){let ms=waits[attempt]+Math.floor(Math.random()*2500);const retry=msg.match(/retry(?: in| after)?\s*([0-9.]+)s/i);if(retry)ms=Math.max(ms,Math.ceil(parseFloat(retry[1])*1000));await waitRetry(j,ms,attempt+2);continue}
    throw last;
   }
-  throw last||new Error("Falha temporária no Gemini.");
- }catch(e){j.status="erro";j.error=e.message||String(e)}
+  throw last||new Error('Falha temporária no provedor.');
+ }catch(e){j.status='erro';j.error=e.message||String(e)}
 }
 async function pump(){
  if(pumpBusy)return;pumpBusy=true;
