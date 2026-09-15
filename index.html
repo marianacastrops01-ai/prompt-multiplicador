@@ -359,7 +359,24 @@ async function pump(){
  if(pumpBusy)return;pumpBusy=true;
  try{let j;while((j=jobs.find(x=>x.status==='fila'))){j.status='processando';render();await processJob(j);render();await sleep(2500)}}finally{pumpBusy=false}
 }
-async function copyText(btn,text){try{await navigator.clipboard.writeText(text);const old=btn.textContent;btn.textContent='Copiado ✓';setTimeout(()=>btn.textContent=old,1200)}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();const old=btn.textContent;btn.textContent='Copiado ✓';setTimeout(()=>btn.textContent=old,1200)}}
+const copyResetTimers=new WeakMap();
+function showCopiedState(btn){
+ if(!btn.dataset.copyLabel || btn.dataset.copyLabel==='Copiado ✓') btn.dataset.copyLabel=btn.textContent==='Copiado ✓'?'Copiar':btn.textContent;
+ const previous=copyResetTimers.get(btn);
+ if(previous) clearTimeout(previous);
+ btn.textContent='Copiado ✓';
+ const timer=setTimeout(()=>{btn.textContent=btn.dataset.copyLabel||'Copiar';copyResetTimers.delete(btn)},2000);
+ copyResetTimers.set(btn,timer);
+}
+async function copyText(btn,text){
+ try{
+  await navigator.clipboard.writeText(text);
+  showCopiedState(btn);
+ }catch(e){
+  const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();
+  showCopiedState(btn);
+ }
+}
 function copyAll(id){const j=id.startsWith('history:')?historyItems.find(x=>x.id===id.slice(8)):jobs.find(j=>j.id===id);if(j?.result)navigator.clipboard.writeText(JSON.stringify(j.result,null,2)).then(()=>alert('Matriz copiada.'))}
 const d=$('drop');['dragover','dragenter'].forEach(e=>d.addEventListener(e,x=>x.preventDefault()));d.addEventListener('drop',e=>{e.preventDefault();addImageFiles(e.dataTransfer.files)});
 apiState();updateMatrixTotal();render();
