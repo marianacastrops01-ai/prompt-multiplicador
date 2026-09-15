@@ -87,6 +87,10 @@ input,textarea,select{border-color:rgba(124,145,170,.18)!important}
 </style>
 </head>
 <body><div class="wrap">
+<div class="navtabs" style="position:sticky;top:0;z-index:1000;padding:10px 0;background:linear-gradient(180deg,#080d14 75%,rgba(8,13,20,.94));margin-top:0">
+ <button class="navtab active" onclick="showTab('gerador',this)">⚡ Gerador</button>
+ <button class="navtab" onclick="showTab('banco',this)">🧠 Banco de Prompts</button>
+</div>
 <div id="tab-gerador" class="tabpane active">
 
 <div class="top"><div><div class="brand">TIKTOK SHOP</div>
@@ -99,10 +103,6 @@ input,textarea,select{border-color:rgba(124,145,170,.18)!important}
     </div>
   </div>
   <div class="pm-badge">FLOW PROMPT ENGINE</div>
-</div>
-<div class="navtabs">
- <button class="navtab active" onclick="showTab('gerador',this)">⚡ Gerador</button>
- <button class="navtab" onclick="showTab('banco',this)">🧠 Banco de Prompts</button>
 </div>
 
 <div class="muted">Esteira de criação de matrizes para vídeos de venda.</div></div><div class="row"><button class="btn" onclick="settings()">⚙ Configurações da API</button><a class="btn" href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="text-decoration:none">🔑 Obter API Gemini</a></div></div>
