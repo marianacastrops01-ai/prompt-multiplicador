@@ -345,6 +345,9 @@ A duracao_sugerida deve ser “8s” em todos os Ganchos, Corpos e CTAs.
 CHECK FINAL OBRIGATÓRIO POR CENA
 Antes do JSON, revise silenciosamente cada cena e só aceite se: (1) fala_exata tem 130–150 caracteres; (2) não fala preço explícito; (3) não inventa escassez/estoque/erro de preço; (4) copy tem intenção de venda e não soa genérica; (5) ação visual combina com a fala; (6) gênero visual = gênero da voz; (7) a cena combina com qualquer bloco das outras categorias. Se falhar, reescreva antes de retornar.
 
+INTEGRIDADE DO JSON
+A resposta precisa ser JSON válido do primeiro ao último caractere. Nunca interrompa uma string no meio, nunca use quebras de linha literais dentro de valores JSON e nunca deixe aspas, chaves ou colchetes abertos. Se necessário, seja mais conciso nos textos antes de comprometer a validade do JSON.
+
 SAÍDA
 A quantidade exata de Ganchos, Corpos e CTAs será informada no final. Obedeça exatamente.
 Para cada cena retorne:
@@ -413,19 +416,32 @@ async function processJob(j){
   for(let attempt=0;attempt<8;attempt++){
    let res,data,text='';
    if(provider==='gemini'){
-    const body={contents:[{role:'user',parts:[{text:fullPrompt},...imageParts]}],generationConfig:{responseMimeType:'application/json',maxOutputTokens:16384,temperature:.72}};
+    const body={contents:[{role:'user',parts:[{text:fullPrompt},...imageParts]}],generationConfig:{responseMimeType:'application/json',maxOutputTokens:32768,temperature:.45}};
     res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent',{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify(body)});data=await res.json().catch(()=>({}));
     if(res.ok)text=(data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('').trim();
    }else if(provider==='openai'){
     const content=[{type:'input_text',text:fullPrompt},...imageParts.map(p=>({type:'input_image',image_url:`data:${p.inline_data.mime_type};base64,${p.inline_data.data}`}))];
-    res=await fetch('https://api.openai.com/v1/responses',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'gpt-5.6-luna',input:[{role:'user',content}],text:{format:{type:'json_object'}},max_output_tokens:16384})});data=await res.json().catch(()=>({}));
+    res=await fetch('https://api.openai.com/v1/responses',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'gpt-5.6-luna',input:[{role:'user',content}],text:{format:{type:'json_object'}},max_output_tokens:32768})});data=await res.json().catch(()=>({}));
     if(res.ok)text=data.output_text||(data.output||[]).flatMap(o=>o.content||[]).map(x=>x.text||'').join('');
    }else{
     const content=[...imageParts.map(p=>({type:'image',source:{type:'base64',media_type:p.inline_data.mime_type,data:p.inline_data.data}})),{type:'text',text:fullPrompt}];
-    res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-5',max_tokens:16384,messages:[{role:'user',content}]})});data=await res.json().catch(()=>({}));
+    res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-5',max_tokens:32768,messages:[{role:'user',content}]})});data=await res.json().catch(()=>({}));
     if(res.ok)text=(data.content||[]).filter(x=>x.type==='text').map(x=>x.text||'').join('');
    }
-   if(res.ok){text=String(text||'').trim().replace(/^```json\s*/i,'').replace(/```$/,'').trim();if(!text)throw new Error('A IA não retornou conteúdo.');const parsed=JSON.parse(text);if(!parsed.produto||!Array.isArray(parsed.ganchos)||!Array.isArray(parsed.corpos)||!Array.isArray(parsed.ctas))throw new Error('A resposta veio incompleta.');if(parsed.ganchos.length!==j.counts.g||parsed.corpos.length!==j.counts.b||parsed.ctas.length!==j.counts.c)throw new Error('A IA não respeitou a quantidade escolhida. Clique em tentar novamente.');j.result=parsed;j.status='pronto';delete j.error;await historyPut({id:crypto.randomUUID(),createdAt:Date.now(),name:parsed.produto||j.name,notes:j.notes||'',counts:{...j.counts},urls:[...(j.urls||[])],result:parsed,provider});return}
+   if(res.ok){
+    text=String(text||'').trim().replace(/^```json\s*/i,'').replace(/```$/,'').trim();
+    if(!text){last=new Error('A IA retornou uma resposta vazia.');if(attempt<7){j.status='aguardando';j.error='Resposta vazia. Corrigindo automaticamente...';render();await sleep(1800);j.status='processando';continue}throw last}
+    let parsed;
+    try{parsed=JSON.parse(text)}catch(parseErr){
+     const finish=provider==='gemini'?(data.candidates?.[0]?.finishReason||''):'';
+     last=new Error('A IA retornou JSON incompleto ou inválido'+(finish?' ('+finish+')':'')+'.');
+     if(attempt<7){j.status='aguardando';j.error=`Resposta incompleta detectada. Nova tentativa automática ${attempt+2}/8...`;render();await sleep(2200+attempt*700);j.status='processando';continue}
+     throw last;
+    }
+    if(!parsed.produto||!Array.isArray(parsed.ganchos)||!Array.isArray(parsed.corpos)||!Array.isArray(parsed.ctas)){last=new Error('A resposta veio incompleta.');if(attempt<7){j.status='aguardando';j.error=`Estrutura incompleta. Corrigindo automaticamente ${attempt+2}/8...`;render();await sleep(2200);j.status='processando';continue}throw last}
+    if(parsed.ganchos.length!==j.counts.g||parsed.corpos.length!==j.counts.b||parsed.ctas.length!==j.counts.c){last=new Error('A IA não respeitou a quantidade escolhida.');if(attempt<7){j.status='aguardando';j.error=`Quantidade incorreta. Gerando novamente ${attempt+2}/8...`;render();await sleep(2200);j.status='processando';continue}throw last}
+    j.result=parsed;j.status='pronto';delete j.error;await historyPut({id:crypto.randomUUID(),createdAt:Date.now(),name:parsed.produto||j.name,notes:j.notes||'',counts:{...j.counts},urls:[...(j.urls||[])],result:parsed,provider});return
+   }
    const msg=data?.error?.message||data?.error?.error?.message||data?.message||('Erro HTTP '+res.status);last=new Error(msg);
    const quota=/quota exceeded|free_tier_requests|billing|credit balance|usage limit/i.test(msg);
    if(quota){j.status='erro';j.error='COTA DA API ATINGIDA — '+msg;return}
