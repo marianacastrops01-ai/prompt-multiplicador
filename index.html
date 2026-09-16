@@ -370,6 +370,16 @@ A quantidade exata de Ganchos, Corpos e CTAs será informada no final. Obedeça 
 Para cada cena retorne:
 titulo, codigo_objetivo, duracao_sugerida, tipo_cena, conceito_visual, prompt_imagem, fala_exata, prompt_movimento.
 
+REGRA DE ÁUDIO E TELA — OBRIGATÓRIA PARA TODA CENA COM FALA:
+- A fala/narração indicada é o ÚNICO áudio intencional da cena.
+- É EXTREMAMENTE PROIBIDO adicionar música de fundo, trilha sonora, jingle, beat, instrumental ou qualquer música.
+- É EXTREMAMENTE PROIBIDO adicionar legendas, closed captions, subtitles ou transcrição da fala na tela.
+- É EXTREMAMENTE PROIBIDO adicionar textos na tela, títulos, chamadas, preços, ofertas, stickers, emojis, banners, lower thirds, logos sobrepostos ou qualquer elemento gráfico/overlay.
+- É EXTREMAMENTE PROIBIDO adicionar animações gráficas, motion graphics, transições gráficas, efeitos de texto ou elementos animados sobrepostos.
+- Não adicionar interface de TikTok, botões, comentários, curtidas, barras, molduras ou UI.
+- O vídeo deve conter somente a gravação visual natural da cena + a voz especificada. Sons ambientes naturais muito discretos podem existir apenas se forem consequência física real do ambiente/ação; nunca música.
+- Reforce no prompt de movimento, em inglês: NO MUSIC, NO BACKGROUND MUSIC, NO SOUNDTRACK, NO JINGLE, NO SUBTITLES, NO CAPTIONS, NO ON-SCREEN TEXT, NO GRAPHIC OVERLAYS, NO STICKERS, NO ANIMATED TEXT, NO MOTION GRAPHICS, NO SOCIAL-MEDIA UI.
+
 Retorne SOMENTE JSON válido, sem markdown:
 {"produto":"nome específico e limpo do produto","ganchos":[{"titulo":"","codigo_objetivo":"","duracao_sugerida":"","tipo_cena":"","conceito_visual":"","prompt_imagem":"","fala_exata":"","prompt_movimento":""}],"corpos":[{"titulo":"","codigo_objetivo":"","duracao_sugerida":"","tipo_cena":"","conceito_visual":"","prompt_imagem":"","fala_exata":"","prompt_movimento":""}],"ctas":[{"titulo":"","codigo_objetivo":"","duracao_sugerida":"","tipo_cena":"","conceito_visual":"","prompt_imagem":"","fala_exata":"","prompt_movimento":""}]}`;
 
