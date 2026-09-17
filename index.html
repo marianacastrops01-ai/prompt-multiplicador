@@ -100,7 +100,7 @@ input,textarea,select{border-color:rgba(124,145,170,.18)!important}
 }
 
 
-.headline-box{margin-top:28px;padding:18px;border:1px solid #27435a;border-radius:14px;background:#09111b}.headline-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.headline-title{font-size:18px;font-weight:900;color:#fff}.headline-list{display:grid;gap:9px;margin-top:14px}.headline-item{display:flex;gap:10px;align-items:center;padding:11px 12px;border:1px solid #26384a;border-radius:10px;background:#071019}.headline-text{flex:1;font-size:14px;line-height:1.4;color:#e8f1f8}.headline-loading{margin-top:12px;color:#7dd3fc;font-size:12px}.headline-btn{background:#16c79a!important;color:#03120e!important;border-color:#16c79a!important;font-weight:900!important}
+.headline-box{margin-top:28px;padding:18px;border:1px solid #27435a;border-radius:14px;background:#09111b}.headline-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.headline-title{font-size:18px;font-weight:900;color:#fff}.headline-list{display:grid;gap:9px;margin-top:14px}.headline-item{position:relative;display:flex;gap:10px;align-items:center;padding:11px 86px 11px 12px;border:1px solid #26384a;border-radius:10px;background:#071019}.headline-item .copyfield{top:50%;right:10px;transform:translateY(-50%)}.headline-text{flex:1;font-size:14px;line-height:1.4;color:#e8f1f8}.headline-loading{margin-top:12px;color:#7dd3fc;font-size:12px}.headline-btn{background:#16c79a!important;color:#03120e!important;border-color:#16c79a!important;font-weight:900!important}
 </style>
 </head>
 <body><div class="wrap">
@@ -430,7 +430,8 @@ async function generateHeadlines(id){
  }catch(e){box.innerHTML='<div class="errtxt">'+esc(e.message||e)+'</div>'}
  finally{btn.disabled=false;btn.textContent='✨ Gerar novamente'}
 }
-function renderHeadlines(id,arr){const box=$('headlines-'+id);if(!box)return;box.innerHTML='<div class="headline-list">'+arr.map((h,i)=>`<div class="headline-item"><div class="headline-text"><strong>${String(i+1).padStart(2,'0')}.</strong> ${esc(h)}</div><button class="copyfield" onclick="copyText(this,decodeURIComponent('${encodeURIComponent(String(h))}'))">Copiar</button></div>`).join('')+'</div>'}
+function renderHeadlines(id,arr){const box=$('headlines-'+id);if(!box)return;box.innerHTML=`<div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:14px"><button class="btn" onclick="copyAllHeadlines('${id}',this)">📋 Copiar todas</button><button class="btn headline-btn" onclick="generateHeadlines('${id}')">✨ Gerar novamente</button></div><div class="headline-list">`+arr.map((h,i)=>`<div class="headline-item"><div class="headline-text"><strong>${String(i+1).padStart(2,'0')}.</strong> ${esc(h)}</div><button class="copyfield" onclick="copyText(this,decodeURIComponent('${encodeURIComponent(String(h))}'))">Copiar</button></div>`).join('')+'</div>'}
+function copyAllHeadlines(id,btn){const j=jobs.find(x=>x.id===id);if(!j||!j.headlines?.length)return;copyText(btn,j.headlines.map((h,i)=>`${String(i+1).padStart(2,'0')}. ${h}`).join('\n'))}
 function removeJob(id){const i=jobs.findIndex(j=>j.id===id);if(i>=0){jobs.splice(i,1)}render();pump()}
 function retry(id){const j=jobs.find(j=>j.id===id);j.status='fila';delete j.error;render();pump()}
 function fileDataURL(file){return new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=no;r.readAsDataURL(file)})}
