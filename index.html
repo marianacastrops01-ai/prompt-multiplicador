@@ -861,13 +861,12 @@ function renderWorkflow(){
   el.innerHTML=`<span class="wf-port wf-in" title="Entrada: clique aqui para receber uma ligação" onpointerdown="event.stopPropagation()" onmousedown="event.stopPropagation()"></span><span class="wf-port wf-out${workflow.connecting===n.id?' active':''}" title="Saída: clique aqui para começar uma ligação" onpointerdown="event.stopPropagation()" onmousedown="event.stopPropagation()"></span><div class="wf-head"><div class="wf-title">${workflowTypes[n.type]?.[1]||'•'} ${esc(n.title)}</div><span class="wf-type">${esc(workflowTypes[n.type]?.[0]||n.type)}</span></div>${workflowNodeBody(n)}<div class="wf-actions"><button class="btn" style="font-size:10px;padding:6px 8px" onclick="event.stopPropagation();duplicateWorkflowNode('${n.id}')">Duplicar</button><button class="btn" style="font-size:10px;padding:6px 8px" onclick="event.stopPropagation();deleteWorkflowNode('${n.id}')">Excluir</button></div>`;
   el.addEventListener('pointerdown',workflowPointerDown);
   const outPort=el.querySelector('.wf-out'),inPort=el.querySelector('.wf-in');
-  const blockPortDrag=e=>{e.stopPropagation();e.stopImmediatePropagation()};
-  [outPort,inPort].forEach(port=>{
-   port.addEventListener('pointerdown',blockPortDrag,true);
-   port.addEventListener('mousedown',blockPortDrag,true);
-  });
-  outPort.addEventListener('click',e=>{e.stopPropagation();e.preventDefault();startWorkflowConnection(n.id)});
-  inPort.addEventListener('click',e=>{e.stopPropagation();e.preventDefault();finishWorkflowConnection(n.id)});
+  const startFromPort=e=>{e.stopPropagation();e.preventDefault();startWorkflowConnection(n.id)};
+  const finishAtPort=e=>{e.stopPropagation();e.preventDefault();finishWorkflowConnection(n.id)};
+  outPort.addEventListener('pointerdown',startFromPort,true);
+  inPort.addEventListener('pointerdown',finishAtPort,true);
+  outPort.addEventListener('click',startFromPort);
+  inPort.addEventListener('click',finishAtPort);
   el.addEventListener('click',e=>{if(e.target.closest('button,input,textarea,select,.wf-port'))return;workflow.selected=workflow.selected===n.id?null:n.id;renderWorkflow()});
   canvas.appendChild(el);
  }
