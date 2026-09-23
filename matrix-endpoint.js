@@ -1,6 +1,6 @@
 const http = require("http");
 
-const PORT = Number(process.env.MATRIX_PORT || 8188);
+const PORT = Number(process.env.MATRIX_PORT || 8199);
 
 function send(res, status, data) {
   const body = JSON.stringify(data, null, 2);
@@ -76,7 +76,8 @@ const server = http.createServer(async (req, res) => {
       ok: true,
       service: "MatriX Viral local Open Source endpoint",
       routes: ["POST /matrix-generate"],
-      note: "Endpoint local pronto. Para gerar imagem real, conecte este servidor ao ComfyUI/RunPod com Qwen-Image-Edit ou FLUX Kontext.",
+      note: "Isto e uma API local, nao a tela da ferramenta. Abra o index.html ou o GitHub Pages para usar a MatriX Viral. Este endpoint recebe o node Gerador Open Source.",
+      next_step: "Para gerar imagem real, conecte este servidor ao ComfyUI/RunPod com Qwen-Image-Edit ou FLUX Kontext.",
     });
   }
 
