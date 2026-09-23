@@ -100,12 +100,14 @@ input,textarea,select{border-color:rgba(124,145,170,.18)!important}
 }
 
 
-.headline-box{margin-top:28px;padding:18px;border:1px solid #27435a;border-radius:14px;background:#09111b}.headline-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.headline-title{font-size:18px;font-weight:900;color:#fff}.headline-list{display:grid;gap:9px;margin-top:14px}.headline-item{position:relative;display:flex;gap:10px;align-items:center;padding:11px 86px 11px 12px;border:1px solid #26384a;border-radius:10px;background:#071019}.headline-item .copyfield{top:50%;right:10px;transform:translateY(-50%)}.headline-text{flex:1;font-size:14px;line-height:1.4;color:#e8f1f8}.headline-loading{margin-top:12px;color:#7dd3fc;font-size:12px}.headline-btn{background:#16c79a!important;color:#03120e!important;border-color:#16c79a!important;font-weight:900!important}
+.headline-box{margin-top:28px;padding:18px;border:1px solid #27435a;border-radius:14px;background:#09111b}.headline-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.headline-title{font-size:18px;font-weight:900;color:#fff}.headline-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}.headline-group{position:relative;padding:14px;border:1px solid #26384a;border-radius:12px;background:#071019;min-width:0}.headline-group-title{font-size:12px;font-weight:900;color:#2dd4a3;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}.headline-group-lines{display:grid;gap:9px}.headline-line{font-size:14px;line-height:1.45;color:#e8f1f8;padding-bottom:9px;border-bottom:1px solid #1d2d3b}.headline-line:last-child{padding-bottom:0;border-bottom:0}.headline-group-actions{display:flex;justify-content:flex-end;margin-top:12px}.headline-group-actions .btn{font-size:10px;padding:7px 10px}@media(max-width:900px){.headline-list{grid-template-columns:1fr}}.headline-loading{margin-top:12px;color:#7dd3fc;font-size:12px}.headline-btn{background:#16c79a!important;color:#03120e!important;border-color:#16c79a!important;font-weight:900!important}
+.viral-shell{display:grid;grid-template-columns:360px 1fr;gap:18px}.viral-upload{border:1px solid #26384a;border-radius:12px;background:#080e15;padding:12px;text-align:left}.viral-upload-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.viral-upload-title{font-weight:900;color:#f4f7fb}.viral-upload small{font-size:11px}.viral-file-input{display:none}.viral-filebox{display:flex;align-items:center;gap:10px;margin-top:10px;padding:8px;border:1px solid #223244;border-radius:10px;background:#050a10}.viral-filebtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:34px;padding:0 13px;border-radius:8px;border:1px solid rgba(39,230,163,.3);background:#12231f;color:#39e5b4;font-size:12px;font-weight:900;cursor:pointer;white-space:nowrap}.viral-filebtn:hover{background:#173028;border-color:rgba(39,230,163,.48);transform:translateY(-1px)}.viral-filename{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#dbe6f3;font-size:12px;text-align:left}.viral-preview{width:100%;max-height:230px;background:#04070b;border:1px solid #263244;border-radius:12px;margin-top:12px}.viral-refgrid{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.viral-refgrid img{width:58px;height:58px;object-fit:cover;border-radius:8px;border:1px solid #263244}.viral-scene{background:#0b1118;border:1px solid #263244;border-radius:12px;padding:16px;margin-top:14px}.viral-scene h3{margin:0;color:#2dd4a3}.viral-topline{display:flex;justify-content:space-between;gap:10px;align-items:start;flex-wrap:wrap}.viral-status{margin-top:12px;font-size:12px;color:#7dd3fc}.viral-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.viral-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}.viral-summary .pill{border-radius:10px;background:#071019}.viral-empty{text-align:center;padding:100px 20px;color:#94a3b8}.viral-results{margin-top:12px}@media(max-width:900px){.viral-shell{grid-template-columns:1fr}.viral-summary{grid-template-columns:1fr 1fr}.viral-filebox{align-items:stretch}.viral-filename{text-align:left}}
 </style>
 </head>
 <body><div class="wrap">
 <div class="navtabs" style="position:sticky;top:0;z-index:1000;padding:10px 0;background:linear-gradient(180deg,#080d14 75%,rgba(8,13,20,.94));margin-top:0">
  <button class="navtab active" onclick="showTab('gerador',this)">⚡ Gerador</button>
+ <button class="navtab" onclick="showTab('viral',this)">🔥 Remodelagem Viral</button>
  <button class="navtab" onclick="showTab('banco',this)">🧠 Banco de Prompts</button>
  <button class="navtab" onclick="showTab('historico',this)">🕘 Histórico</button>
 </div>
@@ -162,6 +164,50 @@ input,textarea,select{border-color:rgba(124,145,170,.18)!important}
 
 
 </div>
+<div id="tab-viral" class="tabpane">
+ <div class="pm-topbar" style="margin-bottom:18px">
+  <div class="pm-brand">
+   <div class="pm-logo" aria-label="Remodelagem Viral logo"></div>
+   <div class="pm-brandcopy">
+    <h1>REMODELAGEM DE VIDEO VIRAL</h1>
+    <p>Analise cena por cena e transforme videos virais em prompts de 8 segundos para Flow/Veo.</p>
+   </div>
+  </div>
+  <div class="pm-badge">VIRAL CLONING LAB</div>
+ </div>
+ <div class="viral-shell">
+  <div class="card">
+   <h2 style="margin-top:0">Entrada do video</h2>
+   <div class="muted">Envie apenas o video viral. A ferramenta separa as cenas e cria prompts preparados para receber as referencias de produto/avatar depois, na ferramenta de geracao.</div>
+   <div class="viral-upload" style="margin-top:14px">
+    <div class="viral-upload-head">
+     <div class="viral-upload-title">Video viral</div>
+     <small class="muted">MP4, MOV, WEBM ou M4V</small>
+    </div>
+    <div class="viral-filebox">
+     <label class="viral-filebtn" for="viralVideo">Selecionar</label>
+     <div class="viral-filename" id="viralFileName">Nenhum video selecionado</div>
+    </div>
+    <input id="viralVideo" class="viral-file-input" type="file" accept="video/mp4,video/quicktime,video/webm,video/x-m4v,.mp4,.mov,.webm,.m4v">
+    <video id="viralPreview" class="viral-preview" controls style="display:none"></video>
+   </div>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px">
+    <label><span class="muted" style="font-size:11px">Duracao maxima por cena</span><input id="viralSceneSeconds" type="number" min="4" max="8" value="8"></label>
+    <label><span class="muted" style="font-size:11px">Maximo de cenas</span><input id="viralMaxScenes" type="number" min="1" max="12" value="8"></label>
+   </div>
+   <label style="display:block;margin-top:14px"><b>Observacoes opcionais</b><textarea id="viralNotes" placeholder="Produto, oferta, publico, idioma da fala, restricoes, objetivo da remodelagem..."></textarea></label>
+   <button class="btn primary" onclick="analyzeViralVideo()">Analisar e remodelar video viral</button>
+   <div id="viralStatus" class="viral-status"></div>
+  </div>
+  <div class="card">
+   <div style="display:flex;justify-content:space-between;gap:12px;align-items:start;flex-wrap:wrap">
+    <div><h2 style="margin:0">Cenas remodeladas</h2><div class="muted">Cada cena sai pronta como bloco independente de ate 8 segundos.</div></div>
+    <button class="btn" onclick="copyViralAll()" id="viralCopyAllBtn" style="display:none">Copiar analise completa</button>
+   </div>
+   <div id="viralOutput"><div class="viral-empty">Envie um video viral para receber a separacao estrategica das cenas.</div></div>
+  </div>
+ </div>
+</div>
 <div id="tab-banco" class="tabpane">
  <div class="panel" style="padding:18px">
   <div style="display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap">
@@ -194,6 +240,10 @@ input,textarea,select{border-color:rgba(124,145,170,.18)!important}
 const $=id=>document.getElementById(id), jobs=[];
 let historyItems=[];
 let pumpBusy=false;
+let viralAnalysis=null;
+const copyStore=new Map();
+function storeCopyText(text){const id='copy_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2);copyStore.set(id,String(text||''));return id}
+function copyStoredText(btn,id){copyText(btn,copyStore.get(id)||'')}
 const PROMPT=`Você é o ShopFlow Director: estrategista sênior de TikTok Shop, roteirista UGC e prompt engineer especializado especificamente no GOOGLE FLOW para criação de imagens e animação de frames com Veo.
 
 OBJETIVO DE PRODUÇÃO
@@ -385,6 +435,83 @@ REGRA DE ÁUDIO E TELA — OBRIGATÓRIA PARA TODA CENA COM FALA:
 Retorne SOMENTE JSON válido, sem markdown:
 {"produto":"nome específico e limpo do produto","ganchos":[{"titulo":"","codigo_objetivo":"","duracao_sugerida":"","tipo_cena":"","conceito_visual":"","prompt_imagem":"","fala_exata":"","prompt_movimento":""}],"corpos":[{"titulo":"","codigo_objetivo":"","duracao_sugerida":"","tipo_cena":"","conceito_visual":"","prompt_imagem":"","fala_exata":"","prompt_movimento":""}],"ctas":[{"titulo":"","codigo_objetivo":"","duracao_sugerida":"","tipo_cena":"","conceito_visual":"","prompt_imagem":"","fala_exata":"","prompt_movimento":""}]}`;
 
+const VIRAL_PROMPT=`Você é o Viral Scene Remodeller: analista sênior de vídeos virais, diretor UGC de TikTok Shop e prompt engineer especializado em Google Flow/Veo.
+REGRA ABSOLUTA: transcreva toda fala feminina exatamente em português do Brasil, palavra por palavra, mantendo a ordem e o sentido do áudio original. Não traduza, não resuma, não adapte e não invente. A mesma fala exata deve aparecer no campo fala e dentro do prompt_movimento, em: Portuguese (Brazil) dialogue: "...". Se não houver fala audível, use fala: Sem fala. e não inclua diálogo no prompt_movimento.
+Antes de marcar uma cena como Sem fala, escute e analise a faixa de áudio original do vídeo. Não use apenas a leitura visual dos lábios e não escreva “No talking” se existir voz audível.
+
+OBJETIVO
+Analise o vídeo viral enviado, descubra quantas cenas ele tem e gere prompts reversos simples para recriar o vídeo no mesmo estilo. NÃO gere imagem. Apenas separe as cenas e escreva os prompts.
+
+REFERÊNCIAS DO PRODUTO E AVATAR
+Nesta etapa o usuário envia SOMENTE o vídeo viral. Não tente analisar produto/avatar agora.
+Mesmo sem receber as referências nesta aba, cada prompt_imagem e prompt_movimento deve ser escrito para funcionar depois na ferramenta de geração, onde o usuário anexará as imagens reais do produto e do avatar.
+Portanto, os prompts devem dizer explicitamente:
+- use the provided product reference image(s) as the fixed visual identity of the product;
+- reproduce the exact same product from the provided references, preserving shape, geometry, proportions, colors, material, texture, finish, visible components and accessories;
+- if an avatar/person reference is provided, use the exact same person/avatar from the reference image(s), preserving facial identity, hair, skin tone, body, age appearance and recognizable features;
+- do not replace, redesign, simplify, invent or reinterpret the product or avatar.
+Não invente detalhes específicos de produto, preço, desconto, material, benefício ou avatar que não estejam no vídeo ou nas observações do usuário.
+
+SEGMENTAÇÃO ESTRATÉGICA
+Separe o vídeo em blocos contínuos de até 8 segundos para geração no Flow/Veo.
+A quantidade de cenas deve ser a MENOR quantidade possível para cobrir o vídeo inteiro sem passar de 8 segundos por cena.
+Exemplo obrigatório: se o vídeo tem 14 segundos e o limite é 8 segundos, gere 2 cenas, não 3: 00:00 - 00:08 e 00:08 - 00:14, ou uma divisão semântica equivalente como 00:00 - 00:06 e 00:06 - 00:14.
+Só gere mais cenas do que o mínimo matemático se houver cortes visuais muito claros, mudança de cenário/personagem/produto ou fala que precise obrigatoriamente ficar separada.
+Se uma cena do vídeo passar de 8 segundos, divida em blocos menores.
+Retorne somente a divisão final em cenas, com tempo aproximado de início e fim.
+
+REMODELAGEM
+O prompt reverso deve seguir o vídeo original o mais fielmente possível: mesmo ambiente, mesmo produto visível, mesma composição, mesma energia, mesma estética UGC, mesmos gestos e mesma fala quando houver.
+Se o produto aparecer no vídeo, descreva o mesmo produto visível, sem trocar por outro.
+Se houver modelo/mulher/mãos no vídeo, preserve o tipo visual mostrado, sem inventar outra cena.
+
+PROMPT DE IMAGEM
+Crie o prompt do frame base daquela cena, descrevendo exatamente o visual inicial da cena. Todos os elementos que se moverão no vídeo precisam existir no frame inicial.
+O prompt_imagem é uma cópia reversa do frame original, não uma versão nova, bonita ou reinterpretada.
+Descreva a composição do frame com alta fidelidade: posição dos objetos, parede/fundo, cama/móveis, luz, ângulo da câmera, distância, enquadramento vertical, direção do olhar/câmera e proporção de cada elemento no quadro.
+Se aparecer mão, braço ou pessoa, descreva exatamente o que o vídeo mostra: gênero/aparência percebida, pele, formato da mão, unhas, manga/roupa, lado do corpo, posição no quadro, gesto e proximidade do produto/parede. Não troque uma mão feminina por mão masculina, não crie braço maior, não mude a pose e não coloque a mão tocando algo se no frame original ela só aponta/gesticula.
+Se o frame original mostrar apenas uma mão feminina com manga clara em primeiro plano, o prompt_imagem deve manter exatamente isso: uma mão feminina realista, delicada, com cinco dedos naturais, usando a mesma manga/roupa clara, no mesmo lado e gesto do vídeo.
+Evite transformar o frame em foto de catálogo, quarto decorado idealizado, render de arquitetura ou imagem publicitária. Deve parecer um frame real do vídeo viral original.
+Inclua no prompt_imagem: "match the original video frame as closely as possible; do not change the hand/person gender, pose, clothing, composition, camera angle or product placement."
+
+PROMPT DE MOVIMENTO
+Crie o prompt de movimento daquela cena especificamente para Google Labs / Google Flow / Veo, mantendo o mesmo enquadramento, produto, ambiente, gestos, ritmo e câmera do vídeo original.
+O prompt_movimento deve ser um clone reverso do movimento observado na referência, não um movimento genérico. Assista a cena como uma sequência temporal e descreva o que realmente muda do começo ao fim: movimento da pessoa, cabeça, tronco, braço, mão, produto, câmera, foco, distância, entrada/saída de quadro, ritmo, velocidade, direção, pausas e energia.
+Copie a lógica exata do vídeo original: se a pessoa balança, inclina, aponta, vira, aproxima, afasta, acompanha a câmera, sobe/desce a mão, muda a pose ou mantém um micro-movimento handheld, descreva exatamente isso na mesma ordem e com o mesmo timing.
+Não reduza a cena a "mão movimentando" se o vídeo mostra corpo, câmera ou pessoa se mexendo. Não invente movimentos novos, não adicione demonstrações de venda que não existam, não simplifique a ação e não transforme o movimento da referência em outro tipo de gesto.
+O prompt_movimento deve deixar claro: "match the original reference video motion exactly; preserve the same movement sequence, timing, rhythm, camera behavior and human body motion."
+O prompt_movimento deve ser pronto para colar no Flow. Quando houver fala, a fala precisa estar dentro do próprio prompt_movimento, não apenas em campo separado.
+
+REGRA DE FALA CLONADA / ADAPTADA
+Quando a cena original do vídeo viral tiver fala, narração, voz em off ou lip sync:
+- preserve a mesma fala feminina do vídeo o mais fielmente possível;
+- mantenha português brasileiro natural quando a fala estiver em português;
+- preserve ritmo, energia, emoção e intenção da fala;
+- mantenha UMA ÚNICA IDENTIDADE DE VOZ para todas as cenas do mesmo vídeo, porque elas serão juntadas na edição. A voz da Cena 1, Cena 2, Cena 3 etc. deve soar como a mesma mulher falando, com o mesmo timbre, idade aparente, sotaque brasileiro, energia, velocidade e textura vocal;
+- inclua a fala diretamente dentro do prompt_movimento, no formato:
+Portuguese (Brazil) dialogue: "fala adaptada aqui"
+Voice identity: Same female Brazilian Portuguese voice across all scenes from this video; preserve identical timbre, age impression, accent, tone, speed and vocal texture for continuity in editing.
+Performance: mulher jovem adulta brasileira, UGC natural, muito rápida, energética, animada, empolgada, fluida e sem pausas longas; ritmo de venda viral acelerado, como quem precisa prender atenção nos primeiros segundos; sem voz de locutor e sem teatralidade.
+- sincronize a fala com os gestos descritos no movimento.
+- o prompt_movimento deve mencionar explicitamente: synchronized natural lip sync when mouth is visible.
+- o campo fala também deve receber a mesma fala, mas o prompt_movimento NUNCA pode ficar sem a fala quando tem_fala=true.
+
+Quando a cena original NÃO tiver fala:
+- deixe fala_narracao_exata vazio ou escreva "Sem fala.";
+- no prompt_movimento, descreva somente o movimento;
+- inclua explicitamente: no talking, no speech simulation, natural ambient room tone only.
+
+ANATOMIA E AUDIO
+Pessoa com anatomia plausível: dois braços, duas mãos, cinco dedos por mão, sem membros extras. Não peça ações impossíveis para duas mãos.
+Se houver fala, a voz deve ser português brasileiro natural de criadora/criador UGC e deve aparecer dentro do prompt_movimento. A fala é o único áudio intencional. Proibido música, trilha, legendas, textos na tela, stickers, overlays, motion graphics e UI de rede social.
+
+INFORMAÇÕES
+Não invente preço, desconto, benefício técnico, composição, material, urgência, estoque, frete ou especificação não presente nas referências/observações.
+
+SAÍDA
+Retorne SOMENTE JSON válido, sem markdown, no formato:
+{"total_cenas":2,"cenas":[{"numero":1,"tempo_original":"00:00 - 00:06","tem_fala":true,"prompt_imagem":"","fala":"","prompt_movimento":""}]}`;
+
 function preset(el){document.querySelectorAll('.preset').forEach(x=>x.classList.remove('active'));el.classList.add('active');$('ng').value=el.dataset.g;$('nb').value=el.dataset.b;$('nc').value=el.dataset.c;updateMatrixTotal()}
 function manualMatrix(){document.querySelectorAll('.preset').forEach(x=>x.classList.remove('active'));updateMatrixTotal()}
 function updateMatrixTotal(){const g=Math.max(1,+$('ng').value||1),b=Math.max(1,+$('nb').value||1),c=Math.max(1,+$('nc').value||1);$('matrixTotal').textContent=`${g} × ${b} × ${c} = ${g*b*c} combinações de vídeo`}
@@ -401,20 +528,117 @@ async function pasteImagesFromClipboard(){try{if(!navigator.clipboard||!navigato
 $('loadImageBtn').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();$('files').click()});
 $('pasteImageBtn').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();pasteImagesFromClipboard()});
 document.addEventListener('paste',e=>{const imgs=[...(e.clipboardData?.files||[])].filter(f=>f.type.startsWith('image/'));if(imgs.length){e.preventDefault();addImageFiles(imgs)}})
+$('viralVideo').addEventListener('change',()=>{const f=$('viralVideo').files?.[0],v=$('viralPreview'),n=$('viralFileName');if(f){n.textContent=f.name;v.src=URL.createObjectURL(f);v.style.display='block'}else{n.textContent='Nenhum video selecionado';v.removeAttribute('src');v.style.display='none'}});
+function movementWithSpeech(s){
+ const raw=String(s.prompt_movimento||'').trim();
+ const fala=String(s.fala||s.fala_narracao_exata||'').trim();
+ const hasSpeech=!!fala && !/^sem fala\.?$/i.test(fala);
+ if(!hasSpeech)return raw;
+ const already=raw.toLowerCase().includes(fala.toLowerCase())||raw.includes('Portuguese (Brazil) dialogue');
+ if(already)return raw;
+ return `${raw}\n\nPortuguese (Brazil) dialogue: "${fala}"\nVoice identity: Same female Brazilian Portuguese voice across all scenes from this video; preserve identical timbre, age impression, accent, tone, speed and vocal texture for continuity in editing.\nPerformance: mulher jovem adulta brasileira, UGC natural, muito rápida, energética, animada, empolgada, fluida e sem pausas longas; ritmo de venda viral acelerado, como quem precisa prender atenção nos primeiros segundos; sem voz de locutor e sem teatralidade.\nSynchronized natural lip sync when mouth is visible.\nNO MUSIC, NO BACKGROUND MUSIC, NO SUBTITLES, NO CAPTIONS, NO ON-SCREEN TEXT, NO GRAPHIC OVERLAYS, NO SOCIAL-MEDIA UI.`;
+}
+function viralSceneText(s){
+ const fala=String(s.fala||s.fala_narracao_exata||'').trim();
+ const movLabel=(s.tem_fala||s.cena_tem_fala||fala&&!/^sem fala\.?$/i.test(fala))?'PROMPT MOVIMENTO COM A FALA':'PROMPT MOVIMENTO';
+ const movimento=movementWithSpeech(s);
+ return `**Cena ${s.numero||''} (${s.tempo_original||''})**\n\n- **PROMPT IMAGEM:** ${s.prompt_imagem||''}\n- **${movLabel}:** ${movimento}`;
+}
+function viralFullText(data=viralAnalysis){
+ if(!data)return '';
+ const scenes=data.cenas||[];
+ return scenes.map(viralSceneText).join('\n\n');
+}
+function viralPromptField(label,value){
+ const copyId=storeCopyText(value||'');
+ return `<div class="fieldwrap" style="margin-top:10px"><div class="field"><b>${label}:</b> ${esc(value||'')}</div><button class="copyfield" onclick="copyStoredText(this,'${copyId}')">Copiar</button></div>`;
+}
+function renderViralAnalysis(data){
+ viralAnalysis=data;const root=$('viralOutput'),scenes=data.cenas||[];
+ $('viralCopyAllBtn').style.display=scenes.length?'inline-block':'none';
+ root.innerHTML=`<div class="viral-results">`+scenes.map((s,i)=>{const fala=s.fala||s.fala_narracao_exata||'';const hasSpeech=!!fala&&!/^sem fala\.?$/i.test(fala);const movimento=movementWithSpeech(s);return `<div class="viral-scene"><div class="viral-topline"><div><h3>Cena ${esc(s.numero||i+1)} (${esc(s.tempo_original||'tempo não informado')})</h3></div></div>${viralPromptField('PROMPT IMAGEM',s.prompt_imagem||'')}${viralPromptField(hasSpeech?'PROMPT MOVIMENTO COM A FALA':'PROMPT MOVIMENTO',movimento||'')}</div>`}).join('')+`</div>`;
+}
+function copyViralAll(){if(viralAnalysis)copyText($('viralCopyAllBtn'),viralFullText())}
+function videoMetadata(videoEl){return new Promise((ok,no)=>{videoEl.onloadedmetadata=()=>ok();videoEl.onerror=()=>no(new Error('Não foi possível ler o vídeo.'))})}
+function seekVideo(videoEl,time){return new Promise((ok,no)=>{videoEl.onseeked=()=>ok();videoEl.onerror=()=>no(new Error('Não foi possível extrair frames do vídeo.'));videoEl.currentTime=time})}
+async function getVideoDuration(file){const url=URL.createObjectURL(file),video=document.createElement('video');video.preload='metadata';video.src=url;await videoMetadata(video);const duration=Number(video.duration||0);URL.revokeObjectURL(url);if(!duration)throw new Error('Não foi possível identificar a duração do vídeo.');return duration}
+function timeToSeconds(value){const m=String(value||'').match(/(\d+):([0-5]\d)\s*[-–]\s*(\d+):([0-5]\d)/);return m?{start:+m[1]*60 + +m[2],end:+m[3]*60 + +m[4]}:null}
+function formatVideoTime(seconds){const total=Math.max(0,Math.round(seconds)),m=Math.floor(total/60),s=total%60;return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`}
+function enforceVideoCoverage(parsed,duration,sceneSeconds){const source=(parsed.cenas||[]).filter(Boolean),normalized=[];if(!duration||!source.length)return parsed;const total=Math.max(1,Math.ceil(duration/sceneSeconds));for(let i=0;i<total;i++){const start=i*sceneSeconds,stop=Math.min(duration,(i+1)*sceneSeconds),mid=start+(stop-start)/2;let picked=source[Math.min(i,source.length-1)]||source[0];for(const scene of source){const t=timeToSeconds(scene.tempo_original);if(t&&mid>=t.start&&mid<=t.end){picked=scene;break}}normalized.push({...picked,numero:i+1,tempo_original:`${formatVideoTime(start)} - ${formatVideoTime(stop)}`})}parsed.cenas=normalized;parsed.total_cenas=normalized.length;return parsed}
+function normalizeViralSpeech(parsed){for(const scene of (parsed.cenas||[])){const candidate=scene.fala||scene.fala_narracao_exata||scene.dialogue||scene.dialogo||scene.transcricao||scene.transcrição||'';if(candidate)scene.fala=String(candidate).trim();const movement=String(scene.prompt_movimento||'');const match=movement.match(/Portuguese \(Brazil\) dialogue:\s*["“]([^"”]+)["”]/i);if(!scene.fala&&match)scene.fala=match[1].trim();if(scene.fala&&!/^sem fala\.?$/i.test(scene.fala)){scene.tem_fala=true;scene.cena_tem_fala=true}}return parsed}
+function traduzErroAnalise(message){const raw=String(message||'').trim();const low=raw.toLowerCase();if(low.includes('project has been denied access')||low.includes('permission denied'))return 'Acesso negado ao projeto da API. Verifique se o projeto está ativo, se a API está habilitada e se a chave possui permissão.';if(low.includes('api key')||low.includes('api_key')||low.includes('invalid key'))return 'A chave da API é inválida ou não foi configurada. Confira a chave nas Configurações das APIs.';if(low.includes('quota')||low.includes('rate limit')||low.includes('resource exhausted'))return 'O limite de uso da API foi atingido. Aguarde alguns minutos ou use outra chave/API.';if(low.includes('unsupported')||low.includes('not supported'))return 'A API selecionada não aceita este tipo de análise de vídeo. Selecione Gemini para analisar o vídeo completo com áudio.';if(low.includes('network')||low.includes('failed to fetch'))return 'Não foi possível conectar à API. Verifique sua internet e tente novamente.';if(low.includes('timeout'))return 'A análise demorou demais para responder. Tente novamente com um vídeo menor.';if(low.includes('json')||low.includes('unexpected token'))return 'A API retornou uma resposta inválida. Tente novamente.';return raw||'Não foi possível concluir a análise. Verifique as configurações da API.'}
+function parseViralJson(text){const clean=String(text||'').trim().replace(/^```(?:json)?\s*/i,'').replace(/```\s*$/,'').trim();try{return JSON.parse(clean)}catch(_){const start=clean.indexOf('{'),end=clean.lastIndexOf('}');if(start>=0&&end>start)return JSON.parse(clean.slice(start,end+1));throw new Error('A API retornou uma resposta inválida. Tente novamente.')}}
+async function sampleVideoFrames(file,maxFrames=10){
+ const url=URL.createObjectURL(file),video=document.createElement('video');video.muted=true;video.playsInline=true;video.preload='metadata';video.src=url;await videoMetadata(video);
+ const duration=Math.max(1,video.duration||1),count=Math.max(3,Math.min(maxFrames,Math.ceil(duration/2))),frames=[];
+ const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
+ for(let i=0;i<count;i++){
+  const t=Math.min(duration-.1,(duration*(i+.5))/count);await seekVideo(video,Math.max(0,t));
+  const scale=Math.min(1,960/Math.max(video.videoWidth||960,video.videoHeight||960));
+  canvas.width=Math.max(1,Math.round((video.videoWidth||960)*scale));canvas.height=Math.max(1,Math.round((video.videoHeight||540)*scale));
+  ctx.drawImage(video,0,0,canvas.width,canvas.height);
+  frames.push({time:t,inline_data:{mime_type:'image/jpeg',data:canvas.toDataURL('image/jpeg',.82).split(',')[1]}});
+ }
+ URL.revokeObjectURL(url);return frames;
+}
+async function transcribeOpenAIVideo(file,key){const form=new FormData();form.append('file',file,file.name||'video.mp4');form.append('model','gpt-4o-transcribe');form.append('language','pt');form.append('response_format','json');const res=await fetch('https://api.openai.com/v1/audio/transcriptions',{method:'POST',headers:{Authorization:'Bearer '+key},body:form});const data=await res.json().catch(()=>({}));if(!res.ok)throw new Error(data?.error?.message||'A OpenAI não conseguiu transcrever o áudio do vídeo.');return data}
+async function analyzeViralVideo(){
+ const video=$('viralVideo').files?.[0];if(!video)return alert('Envie um video viral para analisar.');
+ const status=$('viralStatus'),btn=document.querySelector('button[onclick="analyzeViralVideo()"]');
+ const provider=getProvider(),key=providerKey(provider);if(!key){status.innerHTML='<span class="errtxt">Configure a API Key de '+esc(providerLabel(provider))+' para analisar videos nesta aba.</span>';return settings()}
+ btn.disabled=true;status.textContent='Preparando vídeo...';$('viralOutput').innerHTML='<div class="viral-empty">Etapa 1: separando cenas do vídeo viral. Etapa 2: criando prompts de imagem e movimento...</div>';$('viralCopyAllBtn').style.display='none';
+ try{
+  const videoUrl=await fileDataURL(video),videoDuration=await getVideoDuration(video);
+  const maxScenes=Math.max(1,Math.min(12,+$('viralMaxScenes').value||8)),sceneSeconds=Math.max(4,Math.min(8,+$('viralSceneSeconds').value||8));
+  const userNotes=$('viralNotes').value.trim()||'Nenhuma.';
+  const fullPrompt=VIRAL_PROMPT+`\n\nCONFIGURAÇÃO DO USUÁRIO:\n- Analise quantas cenas o vídeo tem.\n- Cada cena deve ter no máximo ${sceneSeconds} segundos.\n- Se uma cena passar de ${sceneSeconds} segundos, divida em cenas menores.\n- Use a menor quantidade possível de cenas para cobrir o vídeo inteiro sem passar de ${sceneSeconds}s por cena. Exemplo: vídeo de 14s com limite 8s = 2 cenas, não 3.\n- Só use mais cenas que o mínimo matemático se houver corte visual forte, mudança clara de ambiente/personagem/produto ou fala que precise ficar separada.\n- Retorne no máximo ${maxScenes} cenas.\n- Para cada cena, retorne SOMENTE: tempo_original, prompt_imagem, tem_fala, fala e prompt_movimento.\n- Os prompts são para GOOGLE LABS / GOOGLE FLOW / VEO.\n- O prompt_imagem deve copiar o frame original com alta fidelidade: mesma composição, mesmo enquadramento, mesmo ângulo de câmera, mesma posição da mão/pessoa/produto, mesma roupa/manga e mesmo tipo visual da mão/pessoa. Não trocar mão feminina por masculina, não inventar mão genérica, não mudar pose, não aproximar ou afastar elementos sem necessidade.\n- Se a cena tiver fala feminina, mantenha a mesma fala feminina no campo fala e também obrigatoriamente dentro do prompt_movimento.\n- O prompt_movimento deve copiar fielmente o movimento da referência: mesma sequência temporal, gestos, corpo, mão, câmera, ritmo, direção, timing e energia. Não resumir como movimento genérico de mão se a referência mostra pessoa/câmera/corpo se mexendo.\n- Quando tem_fala=true, prompt_movimento deve conter literalmente: Portuguese (Brazil) dialogue: "..." com a fala da cena.\n- Quando tem_fala=true, prompt_movimento também deve conter: Voice identity: Same female Brazilian Portuguese voice across all scenes from this video; preserve identical timbre, age impression, accent, tone, speed and vocal texture for continuity in editing. Performance: mulher jovem adulta brasileira, UGC natural, muito rápida, energética, animada, empolgada, fluida e sem pausas longas; synchronized natural lip sync when mouth is visible.\n- Se a cena não tiver fala, use fala como "Sem fala." e o prompt_movimento deve conter apenas o movimento, sem fala.\n- Não gere imagem. Não escreva análise longa. Não inclua objetivo viral, estratégia, mecânica ou observações extras.\n- Observações do usuário: ${userNotes}`;
+  status.textContent='Enviando para '+providerLabel(provider)+'. Isso pode levar alguns minutos...';
+  let res,data,text='';
+  if(provider==='gemini'){
+   const body={contents:[{role:'user',parts:[{text:fullPrompt},{inline_data:{mime_type:video.type||'video/mp4',data:videoUrl.split(',')[1]}}]}],generationConfig:{responseMimeType:'application/json',maxOutputTokens:32768,temperature:.35}};
+   res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent',{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify(body)});
+   data=await res.json().catch(()=>({}));if(res.ok)text=(data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('');
+  }else{
+   status.textContent='Extraindo quadros do vídeo para análise com '+providerLabel(provider)+'...';
+   const frames=await sampleVideoFrames(video,16);
+   let transcript='';
+   if(provider==='openai'){status.textContent='Transcrevendo o áudio do vídeo com a OpenAI...';const tr=await transcribeOpenAIVideo(video,key);transcript=String(tr.text||'').trim();}
+   const frameTimes=frames.map((f,i)=>`Frame ${i+1}: ${formatVideoTime(f.time)}`).join('; ');
+   const framePrompt=fullPrompt+`\n\nTEMPOS DOS QUADROS AMOSTRADOS: ${frameTimes}\n\nTRANSCRIÇÃO EXATA DO ÁUDIO EM PORTUGUÊS (use os tempos para colocar cada fala na cena correta): ${transcript||'Áudio não disponível nesta API.'}\n\nIMPORTANTE: A API recebeu quadros amostrados do vídeo, em ordem temporal. Use a transcrição exata acima para as falas. Não invente, traduza ou resuma falas. Divida as cenas e associe cada segmento de fala ao intervalo correto. O prompt_movimento deve clonar a sequência real vista nos quadros: compare frame por frame para identificar o movimento verdadeiro da pessoa, corpo, mão, produto e câmera; descreva começo, meio e fim com o mesmo timing, ritmo, direção e energia, sem inventar outra demonstração e sem reduzir tudo a um gesto genérico de mão.`;
+   if(provider==='openai'){
+    const content=[{type:'text',text:framePrompt},...frames.map(f=>({type:'image_url',image_url:{url:`data:${f.inline_data.mime_type};base64,${f.inline_data.data}`}}))];
+    res=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'gpt-4o',messages:[{role:'user',content}],response_format:{type:'json_object'},max_tokens:16384,temperature:.2})});
+    data=await res.json().catch(()=>({}));if(res.ok)text=data.choices?.[0]?.message?.content||'';
+   }else{
+    const content=[...frames.map(f=>({type:'image',source:{type:'base64',media_type:f.inline_data.mime_type,data:f.inline_data.data}})),{type:'text',text:framePrompt}];
+    res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-5',max_tokens:32768,messages:[{role:'user',content}]})});
+    data=await res.json().catch(()=>({}));if(res.ok)text=(data.content||[]).filter(x=>x.type==='text').map(x=>x.text||'').join('');
+   }
+  }
+  if(!res.ok)throw new Error(data?.error?.message||data?.error?.type||('Erro HTTP '+res.status));
+  text=String(text||'').trim().replace(/^```json\s*/i,'').replace(/```$/,'').trim();
+  if(!text)throw new Error('A API retornou uma resposta vazia.');
+  let parsed=parseViralJson(text);
+  if(!Array.isArray(parsed.cenas)||!parsed.cenas.length)throw new Error('A análise não retornou cenas.');
+  parsed=normalizeViralSpeech(parsed);parsed=enforceVideoCoverage(parsed,videoDuration,sceneSeconds);parsed=normalizeViralSpeech(parsed);
+  renderViralAnalysis(parsed);status.textContent='Análise concluída. Cenas separadas e remodeladas para blocos de até '+sceneSeconds+'s.';
+ }catch(e){let msg=traduzErroAnalise(e.message||e);if(String(e.message||e).toLowerCase().includes('high demand'))msg='A Gemini está com muita demanda no momento. Aguarde alguns instantes e tente analisar o vídeo novamente.';status.innerHTML='<span class="errtxt">'+esc(msg)+'</span>';$('viralOutput').innerHTML='<div class="viral-empty">'+esc(msg)+'</div>'}
+ finally{btn.disabled=false}
+}
 async function enqueue(){const fs=[...$('files').files];if(!fs.length)return alert('Selecione pelo menos uma imagem do produto.');if(!providerKey())return settings();const previews=await Promise.all(fs.map(f=>fileDataURL(f)));const counts={g:Math.max(1,+$('ng').value||1),b:Math.max(1,+$('nb').value||1),c:Math.max(1,+$('nc').value||1)};jobs.push({id:crypto.randomUUID(),files:fs,urls:previews,name:'Produto com '+fs.length+' imagem(ns)',notes:$('notes').value,status:'fila',counts,provider:getProvider()});$('files').value='';$('pickText').textContent='Clique, arraste ou cole imagens';render();pump()}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function render(){const c={fila:0,processando:0,aguardando:0,pronto:0,erro:0};jobs.forEach(j=>{if(c[j.status]!==undefined)c[j.status]++});$('counts').innerHTML=`Fila ${c.fila} · <span style="color:#38bdf8">Processando ${c.processando}</span> · <span style="color:#fbbf24">Aguardando API ${c.aguardando}</span> · <span style="color:#2dd4a3">Pronto ${c.pronto}</span> · <span style="color:#ff6868">Erro ${c.erro}</span>`;$('empty').style.display=jobs.length?'none':'block';$('queue').innerHTML=jobs.map(j=>`<div class="job"><div class="jobhead"><div class="thumbs">${(j.urls||[]).map(u=>`<img class="thumb" src="${u}">`).join('')}</div><div class="grow"><div class="name">${esc(j.result?.produto||j.name)}</div><div class="status ${j.status==='aguardando'?'queued':j.status}">${j.status==='fila'?'NA FILA':j.status==='processando'?'PROCESSANDO...':j.status==='aguardando'?`AGUARDANDO ${providerLabel(j.provider).toUpperCase()}${j.waitSeconds?` · nova tentativa em ${j.waitSeconds}s`:''}`:j.status==='pronto'?'PRONTO':'ERRO'}</div><div class="muted" style="font-size:11px;margin-top:5px">${(j.urls||[]).length} imagem(ns) deste produto · ${j.counts?.g||3}-${j.counts?.b||2}-${j.counts?.c||1} · ${(j.counts?.g||3)*(j.counts?.b||2)*(j.counts?.c||1)} combinações · <strong style="color:#2dd4a3">API: ${esc(providerLabel(j.provider))}</strong></div>${j.error?`<div class="errtxt">${esc(j.error)}</div>`:''}</div>${j.status==='processando'||j.status==='aguardando'?'<div class="spinner"></div>':''}${j.status==='erro'?`<button class="btn" onclick="retry('${j.id}')">Tentar novamente</button>`:''}<button class="btn" onclick="removeJob('${j.id}')">Excluir</button></div>${j.result?matrix(j):''}</div>`).join('');setTimeout(()=>jobs.forEach(j=>{if(j.headlines?.length)renderHeadlines(j.id,j.headlines)}),0)}
 function matrix(j){
  const fw=(label,value)=>`<div class="label">${label}</div><div class="fieldwrap"><div class="field visual">${esc(value||'')}</div><button class="copyfield" onclick="copyText(this,decodeURIComponent('${encodeURIComponent(value||'')}'))">Copiar</button></div>`;
  const section=(title,arr,prefix)=>`<h3 style="color:#2dd4a3;margin-top:22px">${title}</h3>${(arr||[]).map((x,i)=>{const cardText=`${prefix} ${i+1} — ${x.titulo||''}\n\nCódigo e objetivo: ${x.codigo_objetivo||''}\nDuração sugerida: ${x.duracao_sugerida||''}\nTipo de cena: ${x.tipo_cena||''}\n\nConceito visual:\n${x.conceito_visual||''}\n\nPrompt para criação da imagem no Google Flow:\n${x.prompt_imagem||''}\n\nFala ou narração exata:\n${x.fala_exata||''}\n\nPrompt para animação no Google Flow:\n${x.prompt_movimento||''}`;return `<div class="itemcard"><div style="display:flex;justify-content:space-between;gap:10px;align-items:start"><h3 style="margin:0 0 8px">${prefix} ${i+1} — “${esc(x.titulo||'')}”</h3><button class="btn" style="font-size:10px;padding:7px 9px" onclick="copyText(this,decodeURIComponent('${encodeURIComponent(cardText)}'))">Copiar card</button></div><div class="code">${esc(x.codigo_objetivo||'')}</div><div class="meta"><span class="pill">⏱ ${esc(x.duracao_sugerida||'')}</span><span class="pill">🎬 ${esc(x.tipo_cena||'')}</span></div>${fw('01 · CONCEITO VISUAL',x.conceito_visual)}${fw('02 · PROMPT DE IMAGEM — GOOGLE FLOW',x.prompt_imagem)}${fw('03 · FALA / NARRAÇÃO EXATA',x.fala_exata)}${fw('04 · PROMPT DE MOVIMENTO — GOOGLE FLOW / VEO',x.prompt_movimento)}</div>`}).join('')}`;
- return `<details open><summary style="padding:14px;cursor:pointer;font-weight:bold">Abrir matriz — ${esc(j.result.produto||'Produto')}</summary><div class="details"><div style="font-size:20px;font-weight:800;margin-bottom:7px">${esc(j.result.produto||'Produto')}</div><div class="muted" style="font-size:12px;margin-bottom:12px">Gerado com <strong style="color:#2dd4a3">${esc(providerLabel(j.provider))}</strong></div><button class="btn" onclick="copyAll('${j.id}')">Copiar matriz completa</button>${section((j.result.ganchos||[]).length+' GANCHOS',j.result.ganchos,'Gancho')}${section((j.result.corpos||[]).length+' CORPOS',j.result.corpos,'Corpo')}${section((j.result.ctas||[]).length+' CTAs',j.result.ctas,'CTA')}<div class="headline-box"><div class="headline-head"><div><div class="headline-title">✨ Headlines do produto</div><div class="muted" style="margin-top:4px">20 opções humanizadas e adaptadas especificamente para este produto.</div></div><button class="btn headline-btn" id="headlineBtn-${j.id}" onclick="generateHeadlines('${j.id}')">✨ Criar Headlines</button></div><div id="headlines-${j.id}"></div></div></div></details>`}
+ return `<details open><summary style="padding:14px;cursor:pointer;font-weight:bold">Abrir matriz — ${esc(j.result.produto||'Produto')}</summary><div class="details"><div style="font-size:20px;font-weight:800;margin-bottom:7px">${esc(j.result.produto||'Produto')}</div><div class="muted" style="font-size:12px;margin-bottom:12px">Gerado com <strong style="color:#2dd4a3">${esc(providerLabel(j.provider))}</strong></div><button class="btn" onclick="copyAll('${j.id}')">Copiar matriz completa</button>${section((j.result.ganchos||[]).length+' GANCHOS',j.result.ganchos,'Gancho')}${section((j.result.corpos||[]).length+' CORPOS',j.result.corpos,'Corpo')}${section((j.result.ctas||[]).length+' CTAs',j.result.ctas,'CTA')}<div class="headline-box"><div class="headline-head"><div><div class="headline-title">✨ Headlines do produto</div><div class="muted" style="margin-top:4px">9 headlines humanizadas, organizadas em 3 blocos com 3 opções cada.</div></div><button class="btn headline-btn" id="headlineBtn-${j.id}" onclick="generateHeadlines('${j.id}')">✨ Criar Headlines</button></div><div id="headlines-${j.id}"></div></div></div></details>`}
 async function generateHeadlines(id){
  const j=jobs.find(x=>x.id===id);if(!j||!j.result)return;
  const box=$('headlines-'+id),btn=$('headlineBtn-'+id),provider=j.provider||getProvider(),key=providerKey(provider);
  if(!key){alert('Configure a chave da API '+providerLabel(provider)+'.');return settings()}
- btn.disabled=true;btn.textContent='Gerando...';box.innerHTML='<div class="headline-loading">Criando 20 headlines específicas para este produto...</div>';
+ btn.disabled=true;btn.textContent='Gerando...';box.innerHTML='<div class="headline-loading">Criando 9 headlines específicas para este produto...</div>';
  const context=[...(j.result.ganchos||[]),...(j.result.corpos||[]),...(j.result.ctas||[])].slice(0,8).map(x=>[x.titulo,x.conceito_visual,x.fala_exata].filter(Boolean).join(' | ')).join('\n');
- const hp=`Crie EXATAMENTE 20 headlines curtas em português brasileiro para o produto: "${j.result.produto||j.name}".\n\nCONTEXTO REAL DO PRODUTO:\n${context}\n\nREGRAS: adapte cada headline especificamente a este produto e ao que realmente aparece no contexto; escrita extremamente humana, espontânea, informal e natural, como uma pessoa postando sobre um achadinho no TikTok Shop; varie intenção e construção; algumas podem usar 1 ou 2 emojis, outras sem emoji; pode usar alongamentos naturais com moderação (ex.: maravilhosaaaa, genteeee), reticências e exclamações; misture surpresa, desejo, descoberta, qualidade, preço/oferta SOMENTE se o contexto sustentar preço/oferta, urgência SOMENTE se houver informação real que sustente urgência. Não invente preço, desconto, estoque, últimas unidades, benefícios, materiais ou características. Evite linguagem de anúncio, slogans corporativos, frases robóticas, repetição e clickbait falso. Exemplos de TOM, não para copiar: "Não acreditei quando vi esse preço!", "só quem entende de qualidade sabe.", "o achadinho da minha vida...", "que promo maravilhosaaaaaa!". Retorne SOMENTE JSON válido no formato {"headlines":["...", "..."]}.`;
+ const hp=`Crie EXATAMENTE 9 headlines curtas em português brasileiro para o produto: "${j.result.produto||j.name}".\n\nCONTEXTO REAL DO PRODUTO:\n${context}\n\nREGRAS: adapte cada headline especificamente a este produto e ao que realmente aparece no contexto; escrita extremamente humana, espontânea, informal e natural, como uma pessoa postando sobre um achadinho no TikTok Shop; varie intenção e construção; algumas podem usar 1 ou 2 emojis, outras sem emoji; pode usar alongamentos naturais com moderação (ex.: maravilhosaaaa, genteeee), reticências e exclamações; misture surpresa, desejo, descoberta, qualidade, preço/oferta SOMENTE se o contexto sustentar preço/oferta, urgência SOMENTE se houver informação real que sustente urgência. Não invente preço, desconto, estoque, últimas unidades, benefícios, materiais ou características. Evite linguagem de anúncio, slogans corporativos, frases robóticas, repetição e clickbait falso. Exemplos de TOM, não para copiar: "Não acreditei quando vi esse preço!", "só quem entende de qualidade sabe.", "o achadinho da minha vida...", "que promo maravilhosaaaaaa!". Retorne SOMENTE JSON válido no formato {"headlines":["...", "..."]}.`;
  try{
   let res,data,text='';
   if(provider==='gemini'){
@@ -425,12 +649,12 @@ async function generateHeadlines(id){
    res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-5',max_tokens:4096,messages:[{role:'user',content:hp}]})});data=await res.json().catch(()=>({}));if(res.ok)text=(data.content||[]).filter(x=>x.type==='text').map(x=>x.text||'').join('');
   }
   if(!res.ok)throw new Error(data?.error?.message||data?.error?.type||('Erro HTTP '+res.status));
-  text=String(text||'').trim().replace(/^```json\s*/i,'').replace(/```$/,'').trim();const parsed=JSON.parse(text);const arr=(parsed.headlines||[]).slice(0,20);if(!arr.length)throw new Error('A API não retornou headlines.');
+  text=String(text||'').trim().replace(/^```json\s*/i,'').replace(/```$/,'').trim();const parsed=JSON.parse(text);const arr=(parsed.headlines||[]).slice(0,9);if(arr.length!==9)throw new Error('A API deve retornar exatamente 9 headlines.');if(!arr.length)throw new Error('A API não retornou headlines.');
   j.headlines=arr;renderHeadlines(id,arr);
  }catch(e){box.innerHTML='<div class="errtxt">'+esc(e.message||e)+'</div>'}
  finally{btn.disabled=false;btn.textContent='✨ Gerar novamente'}
 }
-function renderHeadlines(id,arr){const box=$('headlines-'+id);if(!box)return;box.innerHTML=`<div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:14px"><button class="btn" onclick="copyAllHeadlines('${id}',this)">📋 Copiar todas</button><button class="btn headline-btn" onclick="generateHeadlines('${id}')">✨ Gerar novamente</button></div><div class="headline-list">`+arr.map((h,i)=>`<div class="headline-item"><div class="headline-text"><strong>${String(i+1).padStart(2,'0')}.</strong> ${esc(h)}</div><button class="copyfield" onclick="copyText(this,decodeURIComponent('${encodeURIComponent(String(h))}'))">Copiar</button></div>`).join('')+'</div>'}
+function renderHeadlines(id,arr){const box=$('headlines-'+id);if(!box)return;const groups=[arr.slice(0,3),arr.slice(3,6),arr.slice(6,9)];box.innerHTML=`<div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:14px"><button class="btn" onclick="copyAllHeadlines('${id}',this)">📋 Copiar todas</button><button class="btn headline-btn" onclick="generateHeadlines('${id}')">✨ Gerar novamente</button></div><div class="headline-list">`+groups.map((g,gi)=>{const blockText=g.map((h,i)=>`${gi*3+i+1}. ${h}`).join('\n');return `<div class="headline-group"><div class="headline-group-title">Bloco ${gi+1} · 3 headlines</div><div class="headline-group-lines">${g.map((h,i)=>`<div class="headline-line"><strong>${String(gi*3+i+1).padStart(2,'0')}.</strong> ${esc(h)}</div>`).join('')}</div><div class="headline-group-actions"><button class="btn" onclick="copyText(this,decodeURIComponent('${encodeURIComponent(blockText)}'))">📋 Copiar bloco</button></div></div>`}).join('')+'</div>'}
 function copyAllHeadlines(id,btn){const j=jobs.find(x=>x.id===id);if(!j||!j.headlines?.length)return;copyText(btn,j.headlines.map((h,i)=>`${String(i+1).padStart(2,'0')}. ${h}`).join('\n'))}
 function removeJob(id){const i=jobs.findIndex(j=>j.id===id);if(i>=0){jobs.splice(i,1)}render();pump()}
 function retry(id){const j=jobs.find(j=>j.id===id);j.status='fila';delete j.error;render();pump()}
@@ -520,11 +744,21 @@ function showCopiedState(btn){
  copyResetTimers.set(btn,timer);
 }
 async function copyText(btn,text){
+ text=String(text||'');
  try{
-  await navigator.clipboard.writeText(text);
+  if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(text);
+  else throw new Error('clipboard-fallback');
   showCopiedState(btn);
  }catch(e){
-  const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();
+  const active=document.activeElement,selection=document.getSelection(),ranges=[];
+  if(selection)for(let i=0;i<selection.rangeCount;i++)ranges.push(selection.getRangeAt(i));
+  const ta=document.createElement('textarea');
+  ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.left='-9999px';ta.style.top='0';ta.style.opacity='0';
+  document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);
+  const ok=document.execCommand('copy');ta.remove();
+  if(active&&active.focus)active.focus();
+  if(selection){selection.removeAllRanges();ranges.forEach(r=>selection.addRange(r))}
+  if(!ok)throw e;
   showCopiedState(btn);
  }
 }
